@@ -4,6 +4,10 @@ Allows you to change your map settings at any time you want.
 
 ## Settings that can be changed:
 
+General:
+
+* Peaceful mode enabled/disabled
+
 Pollution:
 
 * Enabled/Disabled
