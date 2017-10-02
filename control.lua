@@ -1,10 +1,13 @@
-require("mod-gui")
+local mod_gui = require("mod-gui")
 local gui = require("gui")
 local util = require("utilities")
 
 local function reset_to_default(player)
 	local frame_flow = mod_gui.get_frame_flow(player)
 	local more_config_table = frame_flow["change-map-settings-config-more-frame"]["change-map-settings-config-more-table"]
+	--General
+	local general_table = more_config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
+	general_table["change-map-settings-peaceful-checkbox"].state = false
 	-- MAP SETTINGS --
 	--Evolution
 	local evo_table = more_config_table["change-map-settings-config-more-evo-flow"]["change-map-settings-config-more-evo-table"]
@@ -33,6 +36,9 @@ end
 local function use_current_map_gen(player)
 	local frame_flow = mod_gui.get_frame_flow(player)
 	local more_config_table = frame_flow["change-map-settings-config-more-frame"]["change-map-settings-config-more-table"]
+	--General
+	local general_table = more_config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
+	general_table["change-map-settings-peaceful-checkbox"].state = player.surface.peaceful_mode
 	-- MAP SETTINGS --
 	local map_settings = game.map_settings
 	--Evolution
@@ -63,6 +69,9 @@ end
 local function change_map_settings(player)
 	local frame_flow = mod_gui.get_frame_flow(player)
 	local more_config_table = frame_flow["change-map-settings-config-more-frame"]["change-map-settings-config-more-table"]
+	--General
+	local general_table = more_config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
+	player.surface.peaceful_mode = general_table["change-map-settings-peaceful-checkbox"].state
 	-- MAP SETTINGS --
 	local map_settings = game.map_settings
 	--Evolution
@@ -181,8 +190,8 @@ local function change_map_settings(player)
 		player.print({"msg.change-map-settings-invalid-expansion-max-cd"})
 		return false
 	end
-	for _, player in pairs(game.players) do
-		gui.regen(player)
+	for _, plyr in pairs(game.players) do
+		gui.regen(plyr)
 	end
 end
 
@@ -202,6 +211,12 @@ script.on_event({defines.events.on_gui_click}, function(event)
 		change_map_settings(player)
 	elseif clicked_name == "change-map-settings-default-button" then
 		reset_to_default(player)
+	end
+end)
+
+script.on_configuration_changed(function() --migration
+	for _, player in pairs(game.players) do
+		gui.regen(player)
 	end
 end)
 

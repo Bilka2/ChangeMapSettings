@@ -1,4 +1,4 @@
-require("mod-gui")
+local mod_gui = require("mod-gui")
 local util = require("utilities")
 local gui = {}
 
@@ -28,6 +28,36 @@ gui.make_config_option = function(parent, name, caption, tooltip, default, max_w
 	child.text = default
 	if max_width then child.style.maximal_width = max_width end
 	return child
+end
+
+gui.make_general_settings = function(config_more_table)
+	local config_more_option_general_flow = config_more_table.add{
+		type = "flow",
+		name = "change-map-settings-config-more-general-flow",
+		direction = "vertical"
+	}
+	config_more_option_general_flow.add{
+		type = "label",
+		caption = {"gui.change-map-settings-general-title"},
+		style = "caption_label_style",
+		name = "change-map-settings-general-title-label",
+	}
+	local config_more_option_general_table = config_more_option_general_flow.add{
+		type = "table",
+		name = "change-map-settings-config-more-general-table",
+		colspan = 2
+	}
+	
+	config_more_option_general_table.add{
+		type = "label",
+		caption = {"gui-map-generator.peaceful-mode"},
+		name = "change-map-settings-peaceful-label",
+	}
+	config_more_option_general_table.add{
+		type = "checkbox",
+		name = "change-map-settings-peaceful-checkbox",
+		state = false,
+	}
 end
 
 gui.make_expansion_settings = function(config_more_table, map_settings)
@@ -128,7 +158,7 @@ gui.make_evolution_settings = function(config_more_table, map_settings)
 		name = "change-map-settings-evolution-checkbox",
 		state = map_settings.enemy_evolution.enabled,
 	}
-	gui.make_config_option(config_more_option_evo_table, "evolution-factor", {"gui-map-generator.evolution"}, {"gui.evolution-factor-tooltip"}, util.float_to_string(game.forces["enemy"].evolution_factor), 80)
+	gui.make_config_option(config_more_option_evo_table, "evolution-factor", {"gui-map-generator.evolution"}, {"gui.change-map-settings-evolution-factor-tooltip"}, util.float_to_string(game.forces["enemy"].evolution_factor), 80)
 	gui.make_config_option(config_more_option_evo_table, "evolution-time", {"gui-map-generator.evolution-time-factor"}, {"gui-map-generator.evolution-time-factor-description"}, util.float_to_string(map_settings.enemy_evolution.time_factor), 80)
 	gui.make_config_option(config_more_option_evo_table, "evolution-destroy", {"gui-map-generator.evolution-destroy-factor"}, {"gui-map-generator.evolution-destroy-factor-description"}, util.float_to_string(map_settings.enemy_evolution.destroy_factor), 80)
 	gui.make_config_option(config_more_option_evo_table, "evolution-pollution", {"gui-map-generator.evolution-pollution-factor"}, {"gui-map-generator.evolution-pollution-factor-description"}, util.float_to_string(map_settings.enemy_evolution.pollution_factor), 80)
@@ -140,11 +170,13 @@ gui.make_advanced_settings = function(config_more_frame)
 		name = "change-map-settings-config-more-table",
 		colspan = 2
 	}
+	config_more_table.style.horizontal_spacing = 20
 	local map_settings = game.map_settings
 	--make different advanced option groups
 	gui.make_pollution_settings(config_more_table, map_settings)
 	gui.make_evolution_settings(config_more_table, map_settings)
 	gui.make_expansion_settings(config_more_table, map_settings)
+	gui.make_general_settings(config_more_table)
 end
 
 function gui.regen(player)
