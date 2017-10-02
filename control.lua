@@ -71,7 +71,9 @@ local function change_map_settings(player)
 	local more_config_table = frame_flow["change-map-settings-config-more-frame"]["change-map-settings-config-more-table"]
 	--General
 	local general_table = more_config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
-	player.surface.peaceful_mode = general_table["change-map-settings-peaceful-checkbox"].state
+	for _, surface in pairs(game.surfaces) do
+		surface.peaceful_mode = general_table["change-map-settings-peaceful-checkbox"].state
+	end
 	-- MAP SETTINGS --
 	local map_settings = game.map_settings
 	--Evolution
