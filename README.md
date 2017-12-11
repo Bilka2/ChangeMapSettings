@@ -35,6 +35,10 @@ Enemy expansion:
 
 ## Changelog:
 
+2.0.0
+
+* Update to 0.16
+
 1.0.1
 
 * Added peaceful mode option
