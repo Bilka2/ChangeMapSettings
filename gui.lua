@@ -39,13 +39,13 @@ gui.make_general_settings = function(config_more_table)
 	config_more_option_general_flow.add{
 		type = "label",
 		caption = {"gui.change-map-settings-general-title"},
-		style = "caption_label_style",
+		style = "caption_label",
 		name = "change-map-settings-general-title-label",
 	}
 	local config_more_option_general_table = config_more_option_general_flow.add{
 		type = "table",
 		name = "change-map-settings-config-more-general-table",
-		colspan = 2
+		column_count = 2
 	}
 	
 	config_more_option_general_table.add{
@@ -69,13 +69,13 @@ gui.make_expansion_settings = function(config_more_table, map_settings)
 	config_more_option_expansion_flow.add{
 		type = "label",
 		caption = {"gui-map-generator.enemy-expansion-group-tile"},
-		style = "caption_label_style",
+		style = "caption_label",
 		name = "change-map-settings-expansion-title-label",
 	}
 	local config_more_option_expansion_table = config_more_option_expansion_flow.add{
 		type = "table",
 		name = "change-map-settings-config-more-expansion-table",
-		colspan = 2
+		column_count = 2
 	}
 	
 	config_more_option_expansion_table.add{
@@ -105,13 +105,13 @@ gui.make_pollution_settings = function(config_more_table, map_settings)
 	config_more_option_pollution_flow.add{
 		type = "label",
 		caption = {"gui-map-generator.pollution"},
-		style = "caption_label_style",
+		style = "caption_label",
 		name = "change-map-settings-pollution-title-label",
 	}
 	local config_more_option_pollution_table = config_more_option_pollution_flow.add{
 		type = "table",
 		name = "change-map-settings-config-more-pollution-table",
-		colspan = 2
+		column_count = 2
 	}
 	
 	config_more_option_pollution_table.add{
@@ -139,13 +139,13 @@ gui.make_evolution_settings = function(config_more_table, map_settings)
 	config_more_option_evo_flow.add{
 		type = "label",
 		caption = {"gui-map-generator.evolution"},
-		style = "caption_label_style",
+		style = "caption_label",
 		name = "change-map-settings-evolution-title-label",
 	}
 	local config_more_option_evo_table = config_more_option_evo_flow.add{
 		type = "table",
 		name = "change-map-settings-config-more-evo-table",
-		colspan = 2
+		column_count = 2
 	}
 	
 	config_more_option_evo_table.add{
@@ -168,7 +168,7 @@ gui.make_advanced_settings = function(config_more_frame)
 	local config_more_table = config_more_frame.add{
 		type = "table",
 		name = "change-map-settings-config-more-table",
-		colspan = 2
+		column_count = 2
 	}
 	config_more_table.style.horizontal_spacing = 20
 	local map_settings = game.map_settings
@@ -204,7 +204,7 @@ function gui.regen(player)
 	local button_table = config_more_frame.add{
 		type = "table",
 		name = "change-map-settings-config-button-table",
-		colspan = 2
+		column_count = 2
 	}
 	button_table.add{
 		type = "button",
