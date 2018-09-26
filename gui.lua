@@ -273,9 +273,9 @@ gui.make_map_gen_settings = function(parent)
   scroll_pane.style.maximal_height = 400
   scroll_pane.style.visible = true
   
-  local freq_options = {{"frequency.very-low"}, {"frequency.low"}, {"frequency.normal"}, {"frequency.high"}, {"frequency.very-high"}}
+  local freq_options = {{"size.none"}, {"frequency.very-low"}, {"frequency.low"}, {"frequency.normal"}, {"frequency.high"}, {"frequency.very-high"}}
   local size_options = {{"size.none"}, {"size.very-low"}, {"size.low"}, {"size.normal"}, {"size.high"}, {"size.very-high"}}
-  local richn_options = {{"richness.very-low"}, {"richness.low"}, {"richness.normal"}, {"richness.high"}, {"richness.very-high"}}
+  local richn_options = {{"size.none"}, {"richness.very-low"}, {"richness.low"}, {"richness.normal"}, {"richness.high"}, {"richness.very-high"}}
   local resources = util.get_table_of_resources()
   
   local resource_table = scroll_pane.add{
@@ -344,8 +344,8 @@ gui.terrain_options = function(parent, freq_options, size_options, richn_options
     type = "drop-down",
     name = "change-map-settings-map-gen-starting-area-size",
   }
-  starting_area_size.items = {{"size.very-low"}, {"size.low"}, {"size.normal"}, {"size.high"}, {"size.very-high"}}
-  starting_area_size.selected_index = 3
+  starting_area_size.items = size_options
+  starting_area_size.selected_index = 4
   parent.add{type = "label"}
   
   --water
@@ -358,7 +358,7 @@ gui.terrain_options = function(parent, freq_options, size_options, richn_options
     name = "change-map-settings-map-gen-water-freq",
   }
   water_freq.items = freq_options
-  water_freq.selected_index = 3
+  water_freq.selected_index = 4
   local water_size = parent.add{ 
     type = "drop-down",
     name = "change-map-settings-map-gen-water-size",
@@ -394,7 +394,7 @@ gui.make_autoplace_options = function(name, parent, freq_options, size_options, 
     name = "change-map-settings-map-gen-" .. name .. "-freq",
   }
   resource_freq.items = freq_options
-  resource_freq.selected_index = 3
+  resource_freq.selected_index = 4
   local resource_size = parent.add{
     type = "drop-down",
     name = "change-map-settings-map-gen-" .. name .. "-size",
@@ -407,7 +407,7 @@ gui.make_autoplace_options = function(name, parent, freq_options, size_options, 
       name = "change-map-settings-map-gen-" .. name .. "-richn",
     }
     resource_richn.items = richn_options
-    resource_richn.selected_index = 3
+    resource_richn.selected_index = 4
   else
     parent.add{type = "label"}
   end
@@ -426,10 +426,6 @@ gui.kill = function(player)
   --migration from 2.0.0
   if frame_flow["change-map-settings-config-more-frame"] then
 		frame_flow["change-map-settings-config-more-frame"].destroy()
-	end
-  -- from internal testing..
-  if frame_flow["change-map-settings-config-frame"] then
-		frame_flow["change-map-settings-config-frame"].destroy()
 	end
 end
 

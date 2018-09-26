@@ -55,30 +55,23 @@ local function set_to_current_map_gen_settings(player)
     ["high"] = 5,
     ["very-high"] = 6
   }
-  local lookup = {
-    ["very-low"] = 1,
-    ["low"] = 2,
-    ["normal"] = 3,
-    ["high"] = 4,
-    ["very-high"] = 5
-  }
   --water stuff
-  terrain_table["change-map-settings-map-gen-water-freq"].selected_index = lookup[map_gen_settings.terrain_segmentation]
+  terrain_table["change-map-settings-map-gen-water-freq"].selected_index = none_lookup[map_gen_settings.terrain_segmentation]
   terrain_table["change-map-settings-map-gen-water-size"].selected_index = none_lookup[map_gen_settings.water]
   --starting area
-  terrain_table["change-map-settings-map-gen-starting-area-size"].selected_index = lookup[map_gen_settings.starting_area]
+  terrain_table["change-map-settings-map-gen-starting-area-size"].selected_index = none_lookup[map_gen_settings.starting_area]
   -- resources and terrain
   local autoplace_controls = map_gen_settings.autoplace_controls
   for resource, tbl in pairs(autoplace_controls) do
     if resources[resource] then
-      resource_table["change-map-settings-map-gen-" .. resource .. "-freq"].selected_index = lookup[tbl["frequency"]]
+      resource_table["change-map-settings-map-gen-" .. resource .. "-freq"].selected_index = none_lookup[tbl["frequency"]]
       resource_table["change-map-settings-map-gen-" .. resource .. "-size"].selected_index = none_lookup[tbl["size"]]
-      resource_table["change-map-settings-map-gen-" .. resource .. "-richn"].selected_index = lookup[tbl["richness"]]
+      resource_table["change-map-settings-map-gen-" .. resource .. "-richn"].selected_index = none_lookup[tbl["richness"]]
     else
-      terrain_table["change-map-settings-map-gen-" .. resource .. "-freq"].selected_index = lookup[tbl["frequency"]]
+      terrain_table["change-map-settings-map-gen-" .. resource .. "-freq"].selected_index = none_lookup[tbl["frequency"]]
       terrain_table["change-map-settings-map-gen-" .. resource .. "-size"].selected_index = none_lookup[tbl["size"]]
       if terrain_table["change-map-settings-map-gen-" .. resource .. "-richn"] then
-        terrain_table["change-map-settings-map-gen-" .. resource .. "-richn"].selected_index = lookup[tbl["richness"]]
+        terrain_table["change-map-settings-map-gen-" .. resource .. "-richn"].selected_index = none_lookup[tbl["richness"]]
       end
     end
   end
@@ -258,25 +251,25 @@ local function reset_map_gen_to_default(player)
   local terrain_table = map_gen_frame["change-map-settings-resource-scroll-pane"]["change-map-settings-terrain-table"]
   local resources = util.get_table_of_resources()
   --water stuff
-  terrain_table["change-map-settings-map-gen-water-freq"].selected_index = 3
+  terrain_table["change-map-settings-map-gen-water-freq"].selected_index = 4
   terrain_table["change-map-settings-map-gen-water-size"].selected_index = 4
   --starting area
-  terrain_table["change-map-settings-map-gen-starting-area-size"].selected_index = 3
+  terrain_table["change-map-settings-map-gen-starting-area-size"].selected_index = 4
   -- resources and terrain
   local autoplace_control_prototypes = game.autoplace_control_prototypes
   for _, control in pairs(autoplace_control_prototypes) do
     if resources[control.name] then
-      resource_table["change-map-settings-map-gen-" .. control.name .. "-freq"].selected_index = 3
+      resource_table["change-map-settings-map-gen-" .. control.name .. "-freq"].selected_index = 4
       resource_table["change-map-settings-map-gen-" .. control.name .. "-size"].selected_index = 4
-      resource_table["change-map-settings-map-gen-" .. control.name .. "-richn"].selected_index = 3
+      resource_table["change-map-settings-map-gen-" .. control.name .. "-richn"].selected_index = 4
     else
-      terrain_table["change-map-settings-map-gen-" .. control.name .. "-freq"].selected_index = 3
+      terrain_table["change-map-settings-map-gen-" .. control.name .. "-freq"].selected_index = 4
       terrain_table["change-map-settings-map-gen-" .. control.name .. "-size"].selected_index = 4
-      if control.richness then terrain_table["change-map-settings-map-gen-" .. control.name .. "-richn"].selected_index = 3 end
+      if control.richness then terrain_table["change-map-settings-map-gen-" .. control.name .. "-richn"].selected_index = 4 end
     end
   end
   --cliffs
-  terrain_table["change-map-settings-map-gen-cliffs-freq"].selected_index = 3
+  terrain_table["change-map-settings-map-gen-cliffs-freq"].selected_index = 4
   terrain_table["change-map-settings-map-gen-cliffs-size"].selected_index = 4
 end
 
@@ -297,9 +290,9 @@ local function change_map_gen_settings(player)
   end
 
   -- Autoplace controls --
-  local freq_options = {"very-low", "low", "normal", "high", "very-high"}
+  local freq_options = {"none", "very-low", "low", "normal", "high", "very-high"}
   local size_options = {"none", "very-small", "small", "medium", "big", "very-big"}
-  local richn_options = {"very-poor", "poor", "regular", "good", "very-good"}
+  local richn_options = {"none", "very-poor", "poor", "regular", "good", "very-good"}
   local autoplace_control_prototypes = game.autoplace_control_prototypes
   local resource_table = map_gen_frame["change-map-settings-resource-scroll-pane"]["change-map-settings-resource-table"]
   local autoplace_controls_mine = {}
