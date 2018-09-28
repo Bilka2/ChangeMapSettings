@@ -166,7 +166,7 @@ local function change_map_settings(player)
                                                 player, {"msg.change-map-settings-invalid-pollution-diffusion"})
   if not pollution_diffusion then return end
   local pollution_dissipation = util.check_bounds(util.textfield_to_uint(pollution_table["change-map-settings-pollution-dissipation-textfield"]),
-                                                  0, 1000,
+                                                  1, 1000,
                                                   player, {"msg.change-map-settings-invalid-pollution-dissipation"})
   if not pollution_dissipation then return end 
   local pollution_tree_dmg = util.check_bounds(util.textfield_to_uint(pollution_table["change-map-settings-pollution-tree-dmg-textfield"]),
