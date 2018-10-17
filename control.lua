@@ -63,17 +63,19 @@ local function set_to_current_map_gen_settings(player)
   -- resources and terrain
   local autoplace_controls = map_gen_settings.autoplace_controls
   local valid_autoplace_controls = game.autoplace_control_prototypes
-  for name, autoplace_control in pairs(autoplace_controls) do
-    if valid_autoplace_controls[name] then 
-      if resources[name] then
-        resource_table["change-map-settings-map-gen-" .. name .. "-freq"].selected_index = lookup[autoplace_control["frequency"]]
-        resource_table["change-map-settings-map-gen-" .. name .. "-size"].selected_index = lookup[autoplace_control["size"]]
-        resource_table["change-map-settings-map-gen-" .. name .. "-richn"].selected_index = lookup[autoplace_control["richness"]]
-      else
-        terrain_table["change-map-settings-map-gen-" .. name .. "-freq"].selected_index = lookup[autoplace_control["frequency"]]
-        terrain_table["change-map-settings-map-gen-" .. name .. "-size"].selected_index = lookup[autoplace_control["size"]]
-        if terrain_table["change-map-settings-map-gen-" .. name .. "-richn"] then
-          terrain_table["change-map-settings-map-gen-" .. name .. "-richn"].selected_index = lookup[autoplace_control["richness"]]
+  if autoplace_controls then
+    for name, autoplace_control in pairs(autoplace_controls) do
+      if valid_autoplace_controls[name] then 
+        if resources[name] then
+          resource_table["change-map-settings-map-gen-" .. name .. "-freq"].selected_index = lookup[autoplace_control["frequency"]]
+          resource_table["change-map-settings-map-gen-" .. name .. "-size"].selected_index = lookup[autoplace_control["size"]]
+          resource_table["change-map-settings-map-gen-" .. name .. "-richn"].selected_index = lookup[autoplace_control["richness"]]
+        else
+          terrain_table["change-map-settings-map-gen-" .. name .. "-freq"].selected_index = lookup[autoplace_control["frequency"]]
+          terrain_table["change-map-settings-map-gen-" .. name .. "-size"].selected_index = lookup[autoplace_control["size"]]
+          if terrain_table["change-map-settings-map-gen-" .. name .. "-richn"] then
+            terrain_table["change-map-settings-map-gen-" .. name .. "-richn"].selected_index = lookup[autoplace_control["richness"]]
+          end
         end
       end
     end

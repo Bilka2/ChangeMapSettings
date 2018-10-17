@@ -4,6 +4,10 @@ Allows you to change your map and map generation settings at any time you want. 
 
 ## Changelog:
 
+2.1.3
+
+* Fixed crash on factorissimo surfaces
+
 2.1.2
 
 * Fixed handling of invalid autoplace controls in the map
