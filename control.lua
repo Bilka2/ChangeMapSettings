@@ -97,8 +97,8 @@ local function set_to_current_map_gen_settings(player)
     [2.5] = 6
   }
   local cliff_settings = map_gen_settings.cliff_settings
-  terrain_table["change-map-settings-map-gen-cliffs-freq"].selected_index = cliff_freq_index_lookup[math.floor(cliff_settings.cliff_elevation_interval*10)/10] --floor to 1 digit after the decimal point -> 2.55 => 2.5
-  terrain_table["change-map-settings-map-gen-cliffs-size"].selected_index = cliff_size_index_lookup[math.floor(cliff_settings.cliff_elevation_0*10)/10]
+  terrain_table["change-map-settings-map-gen-cliffs-freq"].selected_index = cliff_freq_index_lookup[math.floor(cliff_settings.cliff_elevation_interval*10)/10] or 3 --floor to 1 digit after the decimal point -> 2.55 => 2.5
+  terrain_table["change-map-settings-map-gen-cliffs-size"].selected_index = cliff_size_index_lookup[math.floor(cliff_settings.cliff_elevation_0*10)/10] or 4
 end
 
 local function set_to_current_map_settings(player)
