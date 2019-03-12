@@ -14,7 +14,7 @@ function gui.regen(player)
     tooltip = {"gui.change-map-settings-toggle-tooltip", {"gui.change-map-settings-title"}},
     caption = {"gui.change-map-settings-toggle-config-caption"}
   }
-  button.style.visible = true
+  button.visible = true
   -- general gui frame setup --
   local frame_flow = mod_gui.get_frame_flow(player)
   local main_flow = frame_flow.add{
@@ -22,7 +22,7 @@ function gui.regen(player)
     name = "change-map-settings-main-flow",
     direction = "horizontal"
   }
-  main_flow.style.visible = false
+  main_flow.visible = false
   local config_frame = main_flow.add{
     type = "frame",
     caption = {"gui.change-map-settings-title"},
@@ -271,7 +271,7 @@ gui.make_map_gen_settings = function(parent)
     name = "change-map-settings-resource-scroll-pane",
   }
   scroll_pane.style.maximal_height = 400
-  scroll_pane.style.visible = true
+  scroll_pane.visible = true
   
   local freq_options = {{"size.none"}, {"frequency.very-low"}, {"frequency.low"}, {"frequency.normal"}, {"frequency.high"}, {"frequency.very-high"}}
   local size_options = {{"size.none"}, {"size.very-low"}, {"size.low"}, {"size.normal"}, {"size.high"}, {"size.very-high"}}
@@ -283,7 +283,7 @@ gui.make_map_gen_settings = function(parent)
     name = "change-map-settings-resource-table",
     column_count = 4
   }
-  resource_table.style.visible = true
+  resource_table.visible = true
   gui.autoplace_table_header(resource_table, false)
   gui.resource_options(resource_table, freq_options, size_options, richn_options, resources)
   
@@ -292,7 +292,7 @@ gui.make_map_gen_settings = function(parent)
     name = "change-map-settings-terrain-table",
     column_count = 4
   }
-  terrain_table.style.visible = false
+  terrain_table.visible = false
   gui.autoplace_table_header(terrain_table, true)
   gui.terrain_options(terrain_table, freq_options, size_options, richn_options, resources)
 end

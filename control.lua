@@ -239,7 +239,7 @@ local function change_map_settings(player)
     gui.regen(plyr)
     set_to_current_map_gen_settings(plyr)
     local frame_flow = mod_gui.get_frame_flow(plyr)
-    frame_flow["change-map-settings-main-flow"].style.visible = true
+    frame_flow["change-map-settings-main-flow"].visible = true
   end
 end
 
@@ -371,7 +371,7 @@ local function change_map_gen_settings(player)
     gui.regen(plyr)
     set_to_current_map_gen_settings(plyr)
     local frame_flow = mod_gui.get_frame_flow(plyr)
-    frame_flow["change-map-settings-main-flow"].style.visible = true
+    frame_flow["change-map-settings-main-flow"].visible = true
   end
 end
 
@@ -380,7 +380,7 @@ script.on_event({defines.events.on_gui_click}, function(event)
   local frame_flow = mod_gui.get_frame_flow(player)
   local clicked_name = event.element.name
   if clicked_name == "change-map-settings-toggle-config" then
-    frame_flow["change-map-settings-main-flow"].style.visible = not frame_flow["change-map-settings-main-flow"].style.visible
+    frame_flow["change-map-settings-main-flow"].visible = not frame_flow["change-map-settings-main-flow"].visible
   elseif clicked_name == "change-map-settings-start-button" then
     if player.admin then
       change_map_settings(player)
@@ -403,8 +403,8 @@ script.on_event({defines.events.on_gui_click}, function(event)
     reset_map_gen_to_default(player)
   elseif clicked_name == "change-map-settings-map-gen-tab-button" then
     local resource_scroll_pane = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"]["change-map-settings-resource-scroll-pane"]
-    resource_scroll_pane["change-map-settings-terrain-table"].style.visible = not resource_scroll_pane["change-map-settings-terrain-table"].style.visible
-    resource_scroll_pane["change-map-settings-resource-table"].style.visible = not resource_scroll_pane["change-map-settings-resource-table"].style.visible
+    resource_scroll_pane["change-map-settings-terrain-table"].visible = not resource_scroll_pane["change-map-settings-terrain-table"].visible
+    resource_scroll_pane["change-map-settings-resource-table"].visible = not resource_scroll_pane["change-map-settings-resource-table"].visible
   end
 end)
 
