@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.0.3
+Date: 15. 03. 2019
+  Bugfixes:
+    - Fixed that "Absorption modifier" and "Attack cost modifier" would not allow decimal values.
+---------------------------------------------------------------------------------------------------
 Version: 3.0.2
 Date: 15. 03. 2019
   Minor Features:

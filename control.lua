@@ -116,11 +116,11 @@ local function change_map_settings(player)
   -- Pollution
   local pollution_table = config_table["change-map-settings-config-more-pollution-flow"]["change-map-settings-config-more-pollution-table"]
   local pollution_enabled = pollution_table["change-map-settings-pollution-checkbox"].state
-  local pollution_dissipation = util.check_bounds(util.textfield_to_uint(pollution_table["change-map-settings-pollution-dissipation-textfield"]),
+  local pollution_dissipation = util.check_bounds(util.textfield_to_number(pollution_table["change-map-settings-pollution-dissipation-textfield"]),
                                                   0.1, 4,
                                                   player, {"msg.change-map-settings-invalid-pollution-absorption"})
   if not pollution_dissipation then return end
-  local enemy_attack_pollution_consumption = util.check_bounds(util.textfield_to_uint(pollution_table["change-map-settings-enemy-attack-pollution-consumption-textfield"]),
+  local enemy_attack_pollution_consumption = util.check_bounds(util.textfield_to_number(pollution_table["change-map-settings-enemy-attack-pollution-consumption-textfield"]),
                                                                0.1, 4,
                                                                player, {"msg.change-map-settings-invalid-enemy-attack-pollution-consumption"})
   if not enemy_attack_pollution_consumption then return end  
