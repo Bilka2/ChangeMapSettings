@@ -14,9 +14,9 @@ local function reset_to_default(player)
   local evo_table = config_table["change-map-settings-config-more-evo-flow"]["change-map-settings-config-more-evo-table"]
   evo_table["change-map-settings-evolution-checkbox"].state = true
   evo_table["change-map-settings-evolution-factor-textfield"].text = "0"
-  evo_table["change-map-settings-evolution-time-textfield"].text = "0.000004"
-  evo_table["change-map-settings-evolution-destroy-textfield"].text = "0.002000"
-  evo_table["change-map-settings-evolution-pollution-textfield"].text = "0.000015"
+  evo_table["change-map-settings-evolution-time-textfield"].text = "0.000400"
+  evo_table["change-map-settings-evolution-destroy-textfield"].text = "0.200000"
+  evo_table["change-map-settings-evolution-pollution-textfield"].text = "0.000090"
   --Pollution
   local pollution_table = config_table["change-map-settings-config-more-pollution-flow"]["change-map-settings-config-more-pollution-table"]
   pollution_table["change-map-settings-pollution-checkbox"].state = true
@@ -60,9 +60,9 @@ local function set_to_current_map_settings(player)
   local evo_table = config_table["change-map-settings-config-more-evo-flow"]["change-map-settings-config-more-evo-table"]
   evo_table["change-map-settings-evolution-checkbox"].state = map_settings.enemy_evolution.enabled
   evo_table["change-map-settings-evolution-factor-textfield"].text = util.float_to_string(game.forces["enemy"].evolution_factor)
-  evo_table["change-map-settings-evolution-time-textfield"].text = util.float_to_string(map_settings.enemy_evolution.time_factor)
-  evo_table["change-map-settings-evolution-destroy-textfield"].text = util.float_to_string(map_settings.enemy_evolution.destroy_factor)
-  evo_table["change-map-settings-evolution-pollution-textfield"].text = util.float_to_string(map_settings.enemy_evolution.pollution_factor)
+  evo_table["change-map-settings-evolution-time-textfield"].text = util.float_to_string(map_settings.enemy_evolution.time_factor * 100)
+  evo_table["change-map-settings-evolution-destroy-textfield"].text = util.float_to_string(map_settings.enemy_evolution.destroy_factor * 100)
+  evo_table["change-map-settings-evolution-pollution-textfield"].text = util.float_to_string(map_settings.enemy_evolution.pollution_factor * 100)
   --Pollution
   local pollution_table = config_table["change-map-settings-config-more-pollution-flow"]["change-map-settings-config-more-pollution-table"]
   pollution_table["change-map-settings-pollution-checkbox"].state = map_settings.pollution.enabled
@@ -102,15 +102,15 @@ local function change_map_settings(player)
                                              player, {"msg.change-map-settings-invalid-evolution-factor"})
   if not evolution_factor then return end
   local evolution_time = util.check_bounds(util.textfield_to_number(evo_table["change-map-settings-evolution-time-textfield"]),
-                                           0, 0.0001,
+                                           0, 0.01,
                                            player, {"msg.change-map-settings-invalid-evolution-time"})
   if not evolution_time then return end
   local evolution_destroy = util.check_bounds(util.textfield_to_number(evo_table["change-map-settings-evolution-destroy-textfield"]),
-                                              0, 0.01,
+                                              0, 1,
                                               player, {"msg.change-map-settings-invalid-evolution-destroy"})
   if not evolution_destroy then return end
   local evolution_pollution = util.check_bounds(util.textfield_to_number(evo_table["change-map-settings-evolution-pollution-textfield"]),
-                                                0, 0.0001,
+                                                0, 0.01,
                                                 player, {"msg.change-map-settings-invalid-evolution-pollution"})
   if not evolution_pollution then return end
   -- Pollution
@@ -152,8 +152,8 @@ local function change_map_settings(player)
                                                player, {"msg.change-map-settings-invalid-expansion-max-size"})
   if not expansion_max_size then return end
   local expansion_min_cd = util.check_bounds(util.textfield_to_uint(expansion_table["change-map-settings-expansion-min-cd-textfield"]),
-                                                  1, 60,
-                                                  player, {"msg.change-map-settings-invalid-expansion-min-cd"})
+                                             1, 60,
+                                             player, {"msg.change-map-settings-invalid-expansion-min-cd"})
   if not expansion_min_cd then return end
   local expansion_max_cd = util.check_bounds(util.textfield_to_uint(expansion_table["change-map-settings-expansion-max-cd-textfield"]),
                                              math.max(expansion_min_cd, 5), 180,
@@ -167,9 +167,9 @@ local function change_map_settings(player)
   
   map_settings.enemy_evolution.enabled = evolution_enabled
   game.forces["enemy"].evolution_factor = evolution_factor
-  map_settings.enemy_evolution.time_factor = evolution_time
-  map_settings.enemy_evolution.destroy_factor = evolution_destroy
-  map_settings.enemy_evolution.pollution_factor = evolution_pollution
+  map_settings.enemy_evolution.time_factor = (evolution_time / 100)
+  map_settings.enemy_evolution.destroy_factor = (evolution_destroy / 100)
+  map_settings.enemy_evolution.pollution_factor = (evolution_pollution / 100)
   
   if (pollution_enabled ~= map_settings.pollution.enabled) and (pollution_enabled == false) then
     for _, surface in pairs(game.surfaces) do
