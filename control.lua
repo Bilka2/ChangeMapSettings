@@ -20,10 +20,11 @@ local function reset_to_default(player)
   --Pollution
   local pollution_table = config_table["change-map-settings-config-more-pollution-flow"]["change-map-settings-config-more-pollution-table"]
   pollution_table["change-map-settings-pollution-checkbox"].state = true
-  pollution_table["change-map-settings-pollution-diffusion-textfield"].text = "2"
   pollution_table["change-map-settings-pollution-dissipation-textfield"].text = "1"
-  pollution_table["change-map-settings-pollution-tree-dmg-textfield"].text = "3500"
-  pollution_table["change-map-settings-pollution-tree-absorb-textfield"].text = "500"
+  pollution_table["change-map-settings-enemy-attack-pollution-consumption-textfield"].text = "1"
+  pollution_table["change-map-settings-pollution-tree-dmg-textfield"].text = "60"
+  pollution_table["change-map-settings-pollution-tree-absorb-textfield"].text = "10"
+  pollution_table["change-map-settings-pollution-diffusion-textfield"].text = "2"
   --Enemy expansion
   local expansion_table = config_table["change-map-settings-config-more-expansion-flow"]["change-map-settings-config-more-expansion-table"]
   expansion_table["change-map-settings-enemy-expansion-checkbox"].state = true
@@ -65,10 +66,11 @@ local function set_to_current_map_settings(player)
   --Pollution
   local pollution_table = config_table["change-map-settings-config-more-pollution-flow"]["change-map-settings-config-more-pollution-table"]
   pollution_table["change-map-settings-pollution-checkbox"].state = map_settings.pollution.enabled
-  pollution_table["change-map-settings-pollution-diffusion-textfield"].text = tostring(map_settings.pollution.diffusion_ratio * 100)
   pollution_table["change-map-settings-pollution-dissipation-textfield"].text = tostring(map_settings.pollution.ageing)
+  pollution_table["change-map-settings-enemy-attack-pollution-consumption-textfield"].text = tostring(map_settings.pollution.enemy_attack_pollution_consumption_modifier)
   pollution_table["change-map-settings-pollution-tree-dmg-textfield"].text = tostring(map_settings.pollution.min_pollution_to_damage_trees)
   pollution_table["change-map-settings-pollution-tree-absorb-textfield"].text = tostring(map_settings.pollution.pollution_restored_per_tree_damage)
+  pollution_table["change-map-settings-pollution-diffusion-textfield"].text = tostring(map_settings.pollution.diffusion_ratio * 100)
   --Enemy expansion
   local expansion_table = config_table["change-map-settings-config-more-expansion-flow"]["change-map-settings-config-more-expansion-table"]
   expansion_table["change-map-settings-enemy-expansion-checkbox"].state = map_settings.enemy_expansion.enabled
@@ -114,14 +116,14 @@ local function change_map_settings(player)
   -- Pollution
   local pollution_table = config_table["change-map-settings-config-more-pollution-flow"]["change-map-settings-config-more-pollution-table"]
   local pollution_enabled = pollution_table["change-map-settings-pollution-checkbox"].state
-  local pollution_diffusion = util.check_bounds(util.textfield_to_uint(pollution_table["change-map-settings-pollution-diffusion-textfield"]),
-                                                0, 25,
-                                                player, {"msg.change-map-settings-invalid-pollution-diffusion"})
-  if not pollution_diffusion then return end
   local pollution_dissipation = util.check_bounds(util.textfield_to_uint(pollution_table["change-map-settings-pollution-dissipation-textfield"]),
                                                   0.1, 4,
                                                   player, {"msg.change-map-settings-invalid-pollution-absorption"})
-  if not pollution_dissipation then return end 
+  if not pollution_dissipation then return end
+  local enemy_attack_pollution_consumption = util.check_bounds(util.textfield_to_uint(pollution_table["change-map-settings-enemy-attack-pollution-consumption-textfield"]),
+                                                               0.1, 4,
+                                                               player, {"msg.change-map-settings-invalid-enemy-attack-pollution-consumption"})
+  if not enemy_attack_pollution_consumption then return end  
   local pollution_tree_dmg = util.check_bounds(util.textfield_to_uint(pollution_table["change-map-settings-pollution-tree-dmg-textfield"]),
                                                0, 9999,
                                                player, {"msg.change-map-settings-invalid-pollution-tree-dmg"})
@@ -130,6 +132,10 @@ local function change_map_settings(player)
                                                   0, 9999,
                                                   player, {"msg.change-map-settings-invalid-pollution-tree-absorb"})
   if not pollution_tree_absorb then return end
+  local pollution_diffusion = util.check_bounds(util.textfield_to_uint(pollution_table["change-map-settings-pollution-diffusion-textfield"]),
+                                                0, 25,
+                                                player, {"msg.change-map-settings-invalid-pollution-diffusion"})
+  if not pollution_diffusion then return end
   -- Enemy expansion
   local expansion_table = config_table["change-map-settings-config-more-expansion-flow"]["change-map-settings-config-more-expansion-table"]
   local expansion_enabled = expansion_table["change-map-settings-enemy-expansion-checkbox"].state
@@ -171,10 +177,11 @@ local function change_map_settings(player)
     end
   end
   map_settings.pollution.enabled = pollution_enabled
-  map_settings.pollution.diffusion_ratio = (pollution_diffusion / 100)
   map_settings.pollution.ageing = pollution_dissipation
+  map_settings.pollution.enemy_attack_pollution_consumption_modifier = enemy_attack_pollution_consumption
   map_settings.pollution.min_pollution_to_damage_trees = pollution_tree_dmg
   map_settings.pollution.pollution_restored_per_tree_damage = pollution_tree_absorb
+  map_settings.pollution.diffusion_ratio = (pollution_diffusion / 100)
   
   map_settings.enemy_expansion.enabled = expansion_enabled
   map_settings.enemy_expansion.max_expansion_distance = expansion_distance
@@ -210,7 +217,7 @@ local function change_map_gen_settings(player)
   local map_gen_frame = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"]
   
   --all the stuff
-  local settings = map_gen_gui.read(map_gen_frame)
+  local settings = map_gen_gui.read(map_gen_frame, player)
   
   --seed
   local seed = util.textfield_to_uint(map_gen_frame["change-map-settings-seed-table"]["change-map-settings-seed-textfield"])
@@ -230,7 +237,6 @@ local function change_map_gen_settings(player)
     
   if not status then
     player.print("Failed to apply map gen settings.")
-    player.print(err)
   else
     player.print({"msg.change-map-settings-applied"})
   end

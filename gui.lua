@@ -152,8 +152,8 @@ gui.make_advanced_settings = function(parent, surface)
   local map_settings = game.map_settings
   --make different advanced option groups
   gui.make_pollution_settings(config_table, map_settings)
-  gui.make_evolution_settings(config_table, map_settings)
   gui.make_expansion_settings(config_table, map_settings)
+  gui.make_evolution_settings(config_table, map_settings)
   gui.make_general_settings(config_table, surface)
 end
 
@@ -183,10 +183,11 @@ gui.make_pollution_settings = function(parent, map_settings)
     name = "change-map-settings-pollution-checkbox",
     state = map_settings.pollution.enabled,
   }
-  gui.make_config_option(config_more_option_pollution_table, "pollution-diffusion", {"gui.change-map-settings-in-unit", {"gui-map-generator.pollution-diffusion-ratio"}, {"gui.change-map-settings-percent"}}, {"gui-map-generator.pollution-diffusion-ratio-description"}, tostring(map_settings.pollution.diffusion_ratio * 100), 50)
   gui.make_config_option(config_more_option_pollution_table, "pollution-dissipation", {"gui-map-generator.pollution-absorption-modifier"}, {"gui-map-generator.pollution-absorption-modifier-description"}, tostring(map_settings.pollution.ageing), 50)
+  gui.make_config_option(config_more_option_pollution_table, "enemy-attack-pollution-consumption", {"gui-map-generator.enemy-attack-pollution-consumption-modifier"}, {"gui-map-generator.enemy-attack-pollution-consumption-modifier-description"}, tostring(map_settings.pollution.enemy_attack_pollution_consumption_modifier), 50)
   gui.make_config_option(config_more_option_pollution_table, "pollution-tree-dmg", {"gui-map-generator.minimum-pollution-to-damage-trees"}, {"gui-map-generator.minimum-pollution-to-damage-trees-description"}, tostring(map_settings.pollution.min_pollution_to_damage_trees), 50)
   gui.make_config_option(config_more_option_pollution_table, "pollution-tree-absorb", {"gui-map-generator.pollution-absorbed-per-tree-damaged"}, {"gui-map-generator.pollution-absorbed-per-tree-damaged-description"}, tostring(map_settings.pollution.pollution_restored_per_tree_damage), 50)
+  gui.make_config_option(config_more_option_pollution_table, "pollution-diffusion", {"gui.change-map-settings-in-unit", {"gui-map-generator.pollution-diffusion-ratio"}, {"gui.change-map-settings-percent"}}, {"gui-map-generator.pollution-diffusion-ratio-description"}, tostring(map_settings.pollution.diffusion_ratio * 100), 50)
 end
 
 gui.make_evolution_settings = function(parent, map_settings)

@@ -194,7 +194,7 @@ map_gen_gui.set_to_current = function(parent, map_gen_settings)
   terrain_table[ENTIRE_PREFIX .. "cliffs-size"].text = tostring(cliff_settings.richness) -- WHAT THE FUCK why is it RICHNESS???
 end
 
-map_gen_gui.read = function(parent)
+map_gen_gui.read = function(parent, player)
   local map_gen_settings = {}
   -- Autoplace controls --
   local autoplace_control_prototypes = game.autoplace_control_prototypes
@@ -206,26 +206,26 @@ map_gen_gui.read = function(parent)
   for _, control in pairs(autoplace_control_prototypes) do
     if resources[control.name] then
       autoplace_controls_mine[control.name] = {
-        frequency = util.textfield_to_number(resource_table[ENTIRE_PREFIX .. control.name .. "-freq"]),
-        size = util.textfield_to_number(resource_table[ENTIRE_PREFIX .. control.name .. "-size"]),
-        richness = util.textfield_to_number(resource_table[ENTIRE_PREFIX .. control.name .. "-richn"])
+        frequency = util.textfield_to_number_with_error(resource_table[ENTIRE_PREFIX .. control.name .. "-freq"], player),
+        size = util.textfield_to_number_with_error(resource_table[ENTIRE_PREFIX .. control.name .. "-size"], player),
+        richness = util.textfield_to_number_with_error(resource_table[ENTIRE_PREFIX .. control.name .. "-richn"], player)
       }
     end
   end
   --Terrain settings--
   local terrain_table = parent[ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .. "terrain-table"]
   --water stuff
-  map_gen_settings.terrain_segmentation = util.textfield_to_number(terrain_table[ENTIRE_PREFIX .. "water-freq"])
-  map_gen_settings.water = util.textfield_to_number(terrain_table[ENTIRE_PREFIX .. "water-size"])
+  map_gen_settings.terrain_segmentation = util.textfield_to_number_with_error(terrain_table[ENTIRE_PREFIX .. "water-freq"], player)
+  map_gen_settings.water = util.textfield_to_number_with_error(terrain_table[ENTIRE_PREFIX .. "water-size"], player)
   --starting area
-  map_gen_settings.starting_area = util.textfield_to_number(terrain_table[ENTIRE_PREFIX .. "starting-area-size"])
+  map_gen_settings.starting_area = util.textfield_to_number_with_error(terrain_table[ENTIRE_PREFIX .. "starting-area-size"], player)
   --biters
   --terrain
   for _, control in pairs(autoplace_control_prototypes) do
     if not resources[control.name] then
       autoplace_controls_mine[control.name] = {
-        frequency = util.textfield_to_number(terrain_table[ENTIRE_PREFIX .. control.name .. "-freq"]),
-        size = util.textfield_to_number(terrain_table[ENTIRE_PREFIX .. control.name .. "-size"])
+        frequency = util.textfield_to_number_with_error(terrain_table[ENTIRE_PREFIX .. control.name .. "-freq"], player),
+        size = util.textfield_to_number_with_error(terrain_table[ENTIRE_PREFIX .. control.name .. "-size"], player)
       }
     end
   end
@@ -233,8 +233,8 @@ map_gen_gui.read = function(parent)
   
   local cliff_settings = {}
   cliff_settings.name = "cliff"
-  cliff_settings.cliff_elevation_interval = util.textfield_to_number(terrain_table["change-map-settings-map-gen-cliffs-freq"])
-  cliff_settings.richness = util.textfield_to_number(terrain_table["change-map-settings-map-gen-cliffs-size"])
+  cliff_settings.cliff_elevation_interval = util.textfield_to_number_with_error(terrain_table["change-map-settings-map-gen-cliffs-freq"], player)
+  cliff_settings.richness = util.textfield_to_number_with_error(terrain_table["change-map-settings-map-gen-cliffs-size"], player)
   map_gen_settings.cliff_settings = cliff_settings
   
   return map_gen_settings

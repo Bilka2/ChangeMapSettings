@@ -18,6 +18,14 @@ util.textfield_to_number = function(textfield)
   end
 end
 
+util.textfield_to_number_with_error = function(textfield, player)
+  local number = util.textfield_to_number(textfield)
+  if not number then
+    player.print(textfield.name .. " must be a number.")
+  end
+  return number
+end
+
 util.float_to_string = function(number)
   return string.format("%f", tostring(number))
 end
