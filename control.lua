@@ -5,7 +5,7 @@ local map_gen_gui = require("map_gen_settings_gui")
 
 local function reset_to_default(player)
   local frame_flow = mod_gui.get_frame_flow(player)
-  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-table"]
+  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-scroll-pane"]["change-map-settings-config-table"]
   --General
   local general_table = config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
   general_table["change-map-settings-peaceful-checkbox"].state = false
@@ -50,7 +50,7 @@ end
 
 local function set_to_current_map_settings(player)
   local frame_flow = mod_gui.get_frame_flow(player)
-  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-table"]
+  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-scroll-pane"]["change-map-settings-config-table"]
   --General
   local general_table = config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
   general_table["change-map-settings-peaceful-checkbox"].state = player.surface.peaceful_mode
@@ -88,7 +88,7 @@ end
 
 local function change_map_settings(player)
   local frame_flow = mod_gui.get_frame_flow(player)
-  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-table"]
+  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-scroll-pane"]["change-map-settings-config-table"]
   
   -- Reading everything out
   local general_table = config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]

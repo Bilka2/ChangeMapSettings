@@ -30,7 +30,13 @@ function gui.regen(player)
     name = "change-map-settings-config-frame",
     direction = "vertical"
   }
-  local notice = config_frame.add{
+  local config_scroll_pane = config_frame.add{
+    type = "scroll-pane",
+    name = "change-map-settings-config-scroll-pane",
+  }
+  config_scroll_pane.style.maximal_height = 700
+  
+  local notice = config_scroll_pane.add{
     type = "label",
     caption = "NOTE:\nThe 0.17 version of this mod is missing configuration options because those are missing from the lua api. Furthermore, frequency of water, trees and cliffs is inverted compared to the base game map generation screen. This is also an issue with the lua api.\nThe mod will remain in this state until the lua api is changed to properly expose everything."
   }
@@ -40,7 +46,7 @@ function gui.regen(player)
   notice.style.font = "default-bold"
   notice.style.bottom_padding = 5
   
-  local button_table = config_frame.add{
+  local button_table = config_scroll_pane.add{
     type = "table",
     name = "change-map-settings-config-button-table",
     column_count = 2
@@ -58,7 +64,7 @@ function gui.regen(player)
     caption = {"gui.change-map-settings-default-button-caption"}
   }
   --make gui sections
-  gui.make_advanced_settings(config_frame, player.surface)
+  gui.make_advanced_settings(config_scroll_pane, player.surface)
   
   -- start button at the bottom
   local start_button_flow = config_frame.add{
