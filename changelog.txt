@@ -1,6 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.0.5
+Date: 30. 03. 2019
+  Bugfixes:
+    - Fixed that applying the map generation settings would set peaceful mode to false.
+---------------------------------------------------------------------------------------------------
 Version: 3.0.4
-Date: 29. 03. 2019
+Date: 19. 03. 2019
   Bugfixes:
     - Fixed that the GUI could be cut off due to an undocumented internal limit.
 ---------------------------------------------------------------------------------------------------

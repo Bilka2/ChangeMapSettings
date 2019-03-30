@@ -219,6 +219,16 @@ local function change_map_gen_settings(player)
   --all the stuff
   local settings = map_gen_gui.read(map_gen_frame, player)
   
+  -- fill out missing fields with the current settings 
+  settings.peaceful_mode = player.surface.peaceful_mode
+  settings.research_queue_from_the_start = player.surface.map_gen_settings.research_queue_from_the_start 
+  settings.property_expression_names = player.surface.map_gen_settings.property_expression_names
+  settings.starting_points = player.surface.map_gen_settings.starting_points
+  settings.width = player.surface.map_gen_settings.width
+  settings.height = player.surface.map_gen_settings.height
+  settings.default_enable_all_autoplace_controls = player.surface.map_gen_settings.default_enable_all_autoplace_controls
+  settings.autoplace_settings = player.surface.map_gen_settings.autoplace_settings
+  
   --seed
   local seed = util.textfield_to_uint(map_gen_frame["change-map-settings-seed-table"]["change-map-settings-seed-textfield"])
   if seed and seed == 0 then
@@ -251,7 +261,7 @@ local function change_map_gen_settings(player)
 end
 
 script.on_event({defines.events.on_gui_click}, function(event)
-  local player = game.players[event.player_index]
+  local player = game.get_player(event.player_index)
   local frame_flow = mod_gui.get_frame_flow(player)
   local clicked_name = event.element.name
   if clicked_name == "change-map-settings-toggle-config" then
@@ -276,10 +286,6 @@ script.on_event({defines.events.on_gui_click}, function(event)
     reset_to_default(player)
   elseif clicked_name == "change-map-settings-default-map-gen-button" then
     reset_map_gen_to_default(player)
-  -- elseif clicked_name == "change-map-settings-map-gen-tab-button" then
-    -- local resource_scroll_pane = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"]["change-map-settings-resource-scroll-pane"]
-    -- resource_scroll_pane["change-map-settings-terrain-table"].visible = not resource_scroll_pane["change-map-settings-terrain-table"].visible
-    -- resource_scroll_pane["change-map-settings-resource-table"].visible = not resource_scroll_pane["change-map-settings-resource-table"].visible
   end
 end)
 
@@ -291,7 +297,7 @@ script.on_configuration_changed(function() --migration
 end)
 
 script.on_event(defines.events.on_player_created, function(event)
-  local player = game.players[event.player_index]
+  local player = game.get_player(event.player_index)
   gui.regen(player)
   set_to_current_all(player)
 end)
