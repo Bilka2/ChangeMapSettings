@@ -27,6 +27,14 @@ util.textfield_to_number_with_error = function(textfield, player)
 end
 
 util.number_to_string = function(number) -- shows up to 6 decimal places
+  if number < 0.0001 then
+    return string.format("%.6f", tostring(number))
+  elseif number > 999 then
+    if number > 99999 then
+      return string.format("%.f", tostring(number))
+    end
+    return string.format("%.3f", tostring(number))
+  end
   return tostring(math.floor(number * 1000000 + 0.5) / 1000000) -- 0.5 for "rounding"
 end
 

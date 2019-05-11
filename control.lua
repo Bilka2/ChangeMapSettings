@@ -301,6 +301,12 @@ script.on_event(defines.events.on_player_created, function(event)
   set_to_current_all(player)
 end)
 
+script.on_event(defines.events.on_player_changed_surface, function(event)
+  local player = game.get_player(event.player_index)
+  gui.regen(player)
+  set_to_current_all(player)
+end)
+
 script.on_init(function()
   for _, player in pairs(game.players) do
     gui.regen(player)
