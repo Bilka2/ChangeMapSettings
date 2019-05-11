@@ -26,8 +26,8 @@ util.textfield_to_number_with_error = function(textfield, player)
   return number
 end
 
-util.float_to_string = function(number)
-  return string.format("%f", tostring(number))
+util.number_to_string = function(number) -- shows up to 6 decimal places
+  return tostring(math.floor(number * 1000000 + 0.5) / 1000000) -- 0.5 for "rounding"
 end
 
 util.check_bounds = function(input, min, max, player, error)
@@ -38,6 +38,7 @@ util.check_bounds = function(input, min, max, player, error)
   return false
 end
 
+-- returns table = {["resource-name"] = true, ...}
 util.get_table_of_resources = function(number)
   local resources = {}
   for _, prototype in pairs(game.entity_prototypes) do

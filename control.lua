@@ -39,13 +39,13 @@ local function set_to_current_map_gen_settings(player)
   local frame_flow = mod_gui.get_frame_flow(player)
   local map_gen_settings = player.surface.map_gen_settings
   local map_gen_frame = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"]
-  
+
   --seed
   map_gen_frame["change-map-settings-seed-table"]["change-map-settings-seed-textfield"].text = tostring(map_gen_settings.seed)
-  
+
   --the rest
   map_gen_gui.set_to_current(map_gen_frame, map_gen_settings)
-  
+
 end
 
 local function set_to_current_map_settings(player)
@@ -59,10 +59,10 @@ local function set_to_current_map_settings(player)
   --Evolution
   local evo_table = config_table["change-map-settings-config-more-evo-flow"]["change-map-settings-config-more-evo-table"]
   evo_table["change-map-settings-evolution-checkbox"].state = map_settings.enemy_evolution.enabled
-  evo_table["change-map-settings-evolution-factor-textfield"].text = util.float_to_string(game.forces["enemy"].evolution_factor)
-  evo_table["change-map-settings-evolution-time-textfield"].text = util.float_to_string(map_settings.enemy_evolution.time_factor * 100)
-  evo_table["change-map-settings-evolution-destroy-textfield"].text = util.float_to_string(map_settings.enemy_evolution.destroy_factor * 100)
-  evo_table["change-map-settings-evolution-pollution-textfield"].text = util.float_to_string(map_settings.enemy_evolution.pollution_factor * 100)
+  evo_table["change-map-settings-evolution-factor-textfield"].text = util.number_to_string(game.forces["enemy"].evolution_factor)
+  evo_table["change-map-settings-evolution-time-textfield"].text = util.number_to_string(map_settings.enemy_evolution.time_factor * 100)
+  evo_table["change-map-settings-evolution-destroy-textfield"].text = util.number_to_string(map_settings.enemy_evolution.destroy_factor * 100)
+  evo_table["change-map-settings-evolution-pollution-textfield"].text = util.number_to_string(map_settings.enemy_evolution.pollution_factor * 100)
   --Pollution
   local pollution_table = config_table["change-map-settings-config-more-pollution-flow"]["change-map-settings-config-more-pollution-table"]
   pollution_table["change-map-settings-pollution-checkbox"].state = map_settings.pollution.enabled
@@ -89,7 +89,7 @@ end
 local function change_map_settings(player)
   local frame_flow = mod_gui.get_frame_flow(player)
   local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-scroll-pane"]["change-map-settings-config-table"]
-  
+
   -- Reading everything out
   local general_table = config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
   local peaceful_mode = general_table["change-map-settings-peaceful-checkbox"].state
@@ -123,7 +123,7 @@ local function change_map_settings(player)
   local enemy_attack_pollution_consumption = util.check_bounds(util.textfield_to_number(pollution_table["change-map-settings-enemy-attack-pollution-consumption-textfield"]),
                                                                0.1, 4,
                                                                player, {"msg.change-map-settings-invalid-enemy-attack-pollution-consumption"})
-  if not enemy_attack_pollution_consumption then return end  
+  if not enemy_attack_pollution_consumption then return end
   local pollution_tree_dmg = util.check_bounds(util.textfield_to_uint(pollution_table["change-map-settings-pollution-tree-dmg-textfield"]),
                                                0, 9999,
                                                player, {"msg.change-map-settings-invalid-pollution-tree-dmg"})
@@ -164,13 +164,13 @@ local function change_map_settings(player)
   for _, surface in pairs(game.surfaces) do
     surface.peaceful_mode = peaceful_mode
   end
-  
+
   map_settings.enemy_evolution.enabled = evolution_enabled
   game.forces["enemy"].evolution_factor = evolution_factor
   map_settings.enemy_evolution.time_factor = (evolution_time / 100)
   map_settings.enemy_evolution.destroy_factor = (evolution_destroy / 100)
   map_settings.enemy_evolution.pollution_factor = (evolution_pollution / 100)
-  
+
   if (pollution_enabled ~= map_settings.pollution.enabled) and (pollution_enabled == false) then
     for _, surface in pairs(game.surfaces) do
       surface.clear_pollution()
@@ -182,16 +182,16 @@ local function change_map_settings(player)
   map_settings.pollution.min_pollution_to_damage_trees = pollution_tree_dmg
   map_settings.pollution.pollution_restored_per_tree_damage = pollution_tree_absorb
   map_settings.pollution.diffusion_ratio = (pollution_diffusion / 100)
-  
+
   map_settings.enemy_expansion.enabled = expansion_enabled
   map_settings.enemy_expansion.max_expansion_distance = expansion_distance
   map_settings.enemy_expansion.settler_group_min_size = expansion_min_size
   map_settings.enemy_expansion.settler_group_max_size = expansion_max_size
   map_settings.enemy_expansion.min_expansion_cooldown = (expansion_min_cd * 3600)
   map_settings.enemy_expansion.max_expansion_cooldown = (expansion_max_cd * 3600)
-  
+
   player.print({"msg.change-map-settings-applied"})
-  
+
   -- Update the values shown in everyones gui
   for _, plyr in pairs(game.players) do
     gui.regen(plyr)
@@ -204,10 +204,10 @@ end
 local function reset_map_gen_to_default(player)
   local frame_flow = mod_gui.get_frame_flow(player)
   local map_gen_frame = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"]
-  
+
   --seed
   map_gen_frame["change-map-settings-seed-table"]["change-map-settings-seed-textfield"].text = 0
-  
+
   --the rest
   map_gen_gui.reset_to_defaults(map_gen_frame)
 end
@@ -215,20 +215,19 @@ end
 local function change_map_gen_settings(player)
   local frame_flow = mod_gui.get_frame_flow(player)
   local map_gen_frame = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"]
-  
+
   --all the stuff
   local settings = map_gen_gui.read(map_gen_frame, player)
-  
-  -- fill out missing fields with the current settings 
+
+  -- fill out missing fields with the current settings
   settings.peaceful_mode = player.surface.peaceful_mode
-  settings.research_queue_from_the_start = player.surface.map_gen_settings.research_queue_from_the_start 
   settings.property_expression_names = player.surface.map_gen_settings.property_expression_names
   settings.starting_points = player.surface.map_gen_settings.starting_points
   settings.width = player.surface.map_gen_settings.width
   settings.height = player.surface.map_gen_settings.height
   settings.default_enable_all_autoplace_controls = player.surface.map_gen_settings.default_enable_all_autoplace_controls
   settings.autoplace_settings = player.surface.map_gen_settings.autoplace_settings
-  
+
   --seed
   local seed = util.textfield_to_uint(map_gen_frame["change-map-settings-seed-table"]["change-map-settings-seed-textfield"])
   if seed and seed == 0 then
@@ -239,18 +238,18 @@ local function change_map_gen_settings(player)
     player.print({"msg.change-map-settings-invalid-seed"})
     return
   end
-  
+
   --apply
   local status, err = pcall(function(player, settings)
       player.surface.map_gen_settings = settings
     end, player, settings)
-    
+
   if not status then
-    player.print("Failed to apply map gen settings.")
+    player.print({"msg.change-map-settings-apply-failed"})
   else
     player.print({"msg.change-map-settings-applied"})
   end
-  
+
     -- Update the values shown in everyones gui
   for _, plyr in pairs(game.players) do
     gui.regen(plyr)

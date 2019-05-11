@@ -35,17 +35,17 @@ function gui.regen(player)
     name = "change-map-settings-config-scroll-pane",
   }
   config_scroll_pane.style.maximal_height = 700
-  
+
   local notice = config_scroll_pane.add{
     type = "label",
-    caption = "NOTE:\nThe 0.17 version of this mod is missing configuration options because those are missing from the lua api. Furthermore, frequency of water, trees and cliffs is inverted compared to the base game map generation screen. This is also an issue with the lua api.\nThe mod will remain in this state until the lua api is changed to properly expose everything."
+    caption = "NOTE:\nThe 0.17 version of this mod is missing configuration options because those are missing from the lua api.\nThe mod will remain in this state until the lua api is changed to properly expose everything."
   }
   notice.style.single_line = false
   notice.style.maximal_width = 400
   notice.style.font_color = {r=1, g= 0.1}
   notice.style.font = "default-bold"
   notice.style.bottom_padding = 5
-  
+
   local button_table = config_scroll_pane.add{
     type = "table",
     name = "change-map-settings-config-button-table",
@@ -65,7 +65,7 @@ function gui.regen(player)
   }
   --make gui sections
   gui.make_advanced_settings(config_scroll_pane, player.surface)
-  
+
   -- start button at the bottom
   local start_button_flow = config_frame.add{
     type = "flow",
@@ -83,14 +83,14 @@ function gui.regen(player)
     caption = {"gui.change-map-settings-start-button-caption", {"gui.change-map-settings-title"}},
     style = "confirm_button"
   }
-  
+
   -- map gen settings
   local map_gen_frame = main_flow.add{
     type = "frame",
     caption = {"gui.change-map-settings-map-gen-title"},
     name = "change-map-settings-map-gen-frame",
     direction = "vertical"
-  }  
+  }
   local map_gen_button_table = map_gen_frame.add{
     type = "table",
     name = "change-map-settings-map-gen-button-table",
@@ -108,7 +108,7 @@ function gui.regen(player)
     style = mod_gui.button_style,
     caption = {"gui.change-map-settings-default-button-caption"}
   }
-  
+
   --seed
   local seed_table = map_gen_frame.add{
     type = "table",
@@ -124,10 +124,10 @@ function gui.regen(player)
     name = "change-map-settings-seed-textfield",
     text = "0"
   }
-  
+
   -- rest of map gen settings
   map_gen_gui.create(map_gen_frame)
-  
+
   -- start button at the bottom
   local start_button_flow_2 = map_gen_frame.add{
     type = "flow",
@@ -139,7 +139,7 @@ function gui.regen(player)
   }
   start_button_pusher_2.style.horizontally_stretchable = true
   start_button_flow_2.add{
-    type = "button",  
+    type = "button",
     name = "change-map-settings-start-map-gen-button",
     tooltip = {"gui.change-map-settings-start-map-gen-button-tooltip"},
     caption = {"gui.change-map-settings-start-button-caption", {"gui.change-map-settings-map-gen-title"}},
@@ -154,7 +154,7 @@ gui.make_advanced_settings = function(parent, surface)
     column_count = 2
   }
   config_table.style.horizontal_spacing = 20
-  
+
   local map_settings = game.map_settings
   --make different advanced option groups
   gui.make_pollution_settings(config_table, map_settings)
@@ -179,7 +179,7 @@ gui.make_pollution_settings = function(parent, map_settings)
     name = "change-map-settings-config-more-pollution-table",
     column_count = 2
   }
-  
+
   config_more_option_pollution_table.add{
     type = "label",
     caption = {"gui-map-generator.pollution"}
@@ -212,7 +212,7 @@ gui.make_evolution_settings = function(parent, map_settings)
     name = "change-map-settings-config-more-evo-table",
     column_count = 2
   }
-  
+
   config_more_option_evo_table.add{
     type = "label",
     caption = {"gui-map-generator.evolution"}
@@ -222,10 +222,10 @@ gui.make_evolution_settings = function(parent, map_settings)
     name = "change-map-settings-evolution-checkbox",
     state = map_settings.enemy_evolution.enabled,
   }
-  gui.make_config_option(config_more_option_evo_table, "evolution-factor", {"gui-map-generator.evolution"}, {"gui.change-map-settings-evolution-factor-tooltip"}, util.float_to_string(game.forces["enemy"].evolution_factor), 80)
-  gui.make_config_option(config_more_option_evo_table, "evolution-time", {"gui-map-generator.evolution-time-factor"}, {"gui-map-generator.evolution-time-factor-description"}, util.float_to_string(map_settings.enemy_evolution.time_factor * 100), 80)
-  gui.make_config_option(config_more_option_evo_table, "evolution-destroy", {"gui-map-generator.evolution-destroy-factor"}, {"gui-map-generator.evolution-destroy-factor-description"}, util.float_to_string(map_settings.enemy_evolution.destroy_factor * 100), 80)
-  gui.make_config_option(config_more_option_evo_table, "evolution-pollution", {"gui-map-generator.evolution-pollution-factor"}, {"gui-map-generator.evolution-pollution-factor-description"}, util.float_to_string(map_settings.enemy_evolution.pollution_factor * 100), 80)
+  gui.make_config_option(config_more_option_evo_table, "evolution-factor", {"gui-map-generator.evolution"}, {"gui.change-map-settings-evolution-factor-tooltip"}, util.number_to_string(game.forces["enemy"].evolution_factor), 80)
+  gui.make_config_option(config_more_option_evo_table, "evolution-time", {"gui-map-generator.evolution-time-factor"}, {"gui-map-generator.evolution-time-factor-description"}, util.number_to_string(map_settings.enemy_evolution.time_factor * 100), 80)
+  gui.make_config_option(config_more_option_evo_table, "evolution-destroy", {"gui-map-generator.evolution-destroy-factor"}, {"gui-map-generator.evolution-destroy-factor-description"}, util.number_to_string(map_settings.enemy_evolution.destroy_factor * 100), 80)
+  gui.make_config_option(config_more_option_evo_table, "evolution-pollution", {"gui-map-generator.evolution-pollution-factor"}, {"gui-map-generator.evolution-pollution-factor-description"}, util.number_to_string(map_settings.enemy_evolution.pollution_factor * 100), 80)
 end
 
 gui.make_expansion_settings = function(parent, map_settings)
@@ -244,7 +244,7 @@ gui.make_expansion_settings = function(parent, map_settings)
     name = "change-map-settings-config-more-expansion-table",
     column_count = 2
   }
-  
+
   config_more_option_expansion_table.add{
     type = "label",
     caption = {"gui-map-generator.enemy-expansion-group-tile"}
@@ -277,7 +277,7 @@ gui.make_general_settings = function(parent, surface)
     name = "change-map-settings-config-more-general-table",
     column_count = 2
   }
-  
+
   config_more_option_general_table.add{
     type = "label",
     caption = {"gui-map-generator.peaceful-mode-checkbox"}
@@ -306,14 +306,14 @@ end
 
 gui.kill = function(player)
   local button_flow = mod_gui.get_button_flow(player)
-  local frame_flow = mod_gui.get_frame_flow(player)    
+  local frame_flow = mod_gui.get_frame_flow(player)
   if button_flow["change-map-settings-toggle-config"] then
     button_flow["change-map-settings-toggle-config"].destroy()
   end
   if frame_flow["change-map-settings-main-flow"] then
     frame_flow["change-map-settings-main-flow"].destroy()
   end
-  
+
   --migration from 2.0.0
   if frame_flow["change-map-settings-config-more-frame"] then
 		frame_flow["change-map-settings-config-more-frame"].destroy()
