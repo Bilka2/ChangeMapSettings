@@ -12,14 +12,17 @@ map_gen_gui.create = function(parent)
   scroll_pane.style.maximal_height = 400
   scroll_pane.visible = true
 
-  --map_gen_gui.create_map_type_selector(parent) TODO: Bilka
+  --map_gen_gui.create_map_type_selector(parent) TODO Bilka
 
   map_gen_gui.create_resource_table(scroll_pane)
   map_gen_gui.create_controls_with_scale_table(parent)
   map_gen_gui.create_cliffs_table(parent)
-  --map_gen_gui.create_moisture_and_terrain_type_table(parent) TODO: Bilka
+  map_gen_gui.create_climate_table(parent)
   map_gen_gui.create_enemies_table(parent)
 end
+
+--map_gen_gui.create_map_type_selector = function(parent) TODO Bilka
+--end
 
 map_gen_gui.create_resource_table = function(parent)
   local table = parent.add{
@@ -119,6 +122,33 @@ map_gen_gui.create_cliffs_table = function(parent)
   map_gen_gui.make_autoplace_options("cliffs", table, false)
 end
 
+map_gen_gui.create_climate_table = function(parent)
+  local table = parent.add{
+    type = "table",
+    name = ENTIRE_PREFIX .. "climate-table",
+    column_count = 3,
+    style = "bordered_table"
+  }
+  -- header
+  table.add{type = "label"}
+  table.add{
+    type = "label",
+    caption = {"gui-map-generator.scale"},
+    style = "caption_label",
+    tooltip = {"gui-map-generator.terrain-scale-description"}
+  }
+  table.add{
+    type = "label",
+    caption = {"gui-map-generator.bias"},
+    style = "caption_label",
+    tooltip = {"gui-map-generator.terrain-bias-description"}
+  }
+  table.children[1].style.horizontally_stretchable = true
+
+  map_gen_gui.make_autoplace_options("moisture", table, false)
+  map_gen_gui.make_autoplace_options("aux", table, false)
+end
+
 map_gen_gui.create_enemies_table = function(parent)
   local table = parent.add{
     type = "table",
@@ -163,7 +193,7 @@ map_gen_gui.create_enemies_table = function(parent)
 end
 
 map_gen_gui.make_autoplace_options = function(name, parent, has_richness)
-  if name ~= "cliffs" and name ~= "water" then
+  if name ~= "cliffs" and name ~= "water" and name ~= "moisture" and name ~= "aux" then
     parent.add{
       type = "label",
       caption = {"autoplace-control-names." .. name}
@@ -220,7 +250,14 @@ map_gen_gui.reset_to_defaults = function(parent)
     end
   end
 
-  --cliffs
+  -- moisture and terrain type
+  local climate_table = parent[ENTIRE_PREFIX .."climate-table"]
+  climate_table[ENTIRE_PREFIX .. "moisture-freq"].text = "1"
+  climate_table[ENTIRE_PREFIX .. "moisture-size"].text = "0"
+  climate_table[ENTIRE_PREFIX .. "aux-freq"].text = "1"
+  climate_table[ENTIRE_PREFIX .. "aux-size"].text = "0"
+
+  -- cliffs
   local cliffs_table = parent[ENTIRE_PREFIX .."cliffs-table"]
   cliffs_table[ENTIRE_PREFIX .. "cliffs-freq"].text = "1"
   cliffs_table[ENTIRE_PREFIX .. "cliffs-size"].text = "1"
@@ -257,6 +294,13 @@ map_gen_gui.set_to_current = function(parent, map_gen_settings)
       end
     end
   end
+
+  -- moisture and terrain type
+  local climate_table = parent[ENTIRE_PREFIX .."climate-table"]
+  climate_table[ENTIRE_PREFIX .. "moisture-freq"].text = (1 / map_gen_settings.property_expression_names["control-setting:moisture:frequency:multiplier"]) or "1" -- inverse
+  climate_table[ENTIRE_PREFIX .. "moisture-size"].text = map_gen_settings.property_expression_names["control-setting:moisture:bias"] or "0"
+  climate_table[ENTIRE_PREFIX .. "aux-freq"].text = (1 / map_gen_settings.property_expression_names["control-setting:aux:frequency:multiplier"]) or "1" -- inverse
+  climate_table[ENTIRE_PREFIX .. "aux-size"].text = map_gen_settings.property_expression_names["control-setting:aux:bias"] or "0"
 
   -- cliffs
   local cliffs_table = parent[ENTIRE_PREFIX .."cliffs-table"]
@@ -300,6 +344,13 @@ map_gen_gui.read = function(parent, player)
     end
   end
   map_gen_settings.autoplace_controls = autoplace_controls_mine
+
+  -- moisture and terrain type
+  local climate_table = parent[ENTIRE_PREFIX .."climate-table"]
+  map_gen_settings.property_expression_names["control-setting:moisture:frequency:multiplier"] = 1 / util.textfield_to_number_with_error(climate_table[ENTIRE_PREFIX .. "moisture-freq"], player)
+  map_gen_settings.property_expression_names["control-setting:moisture:bias"] = util.textfield_to_number_with_error(climate_table[ENTIRE_PREFIX .. "moisture-size"], player)
+  map_gen_settings.property_expression_names["control-setting:aux:frequency:multiplier"] = 1 / util.textfield_to_number_with_error(climate_table[ENTIRE_PREFIX .. "aux-freq"], player)
+  map_gen_settings.property_expression_names["control-setting:aux:bias"] = util.textfield_to_number_with_error(climate_table[ENTIRE_PREFIX .. "aux-size"], player)
 
   -- cliffs
   local cliffs_table = parent[ENTIRE_PREFIX .."cliffs-table"]

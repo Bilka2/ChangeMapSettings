@@ -221,7 +221,7 @@ local function change_map_gen_settings(player)
 
   -- fill out missing fields with the current settings
   settings.peaceful_mode = player.surface.peaceful_mode
-  settings.property_expression_names = player.surface.map_gen_settings.property_expression_names
+  settings.property_expression_names = player.surface.map_gen_settings.property_expression_names -- TODO Bilka remove this because it undoes the temperature stuff
   settings.starting_points = player.surface.map_gen_settings.starting_points
   settings.width = player.surface.map_gen_settings.width
   settings.height = player.surface.map_gen_settings.height
