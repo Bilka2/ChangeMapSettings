@@ -1,8 +1,7 @@
 local mod_gui = require("mod-gui")
 local gui = require("gui")
 local util = require("utilities")
-local util2 = require("util")
-local map_gen_gui = util2.table.deepcopy(require("map_gen_settings_gui"))
+local map_gen_gui = require("map_gen_settings_gui")
 
 local function reset_to_default(player)
   local frame_flow = mod_gui.get_frame_flow(player)
