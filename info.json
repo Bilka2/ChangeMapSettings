@@ -6,5 +6,5 @@
   "author": "Bilka",
   "homepage": "",
   "description": "Allows you to change your map and map generation settings at any time you want.",
-  "dependencies": [ "base >= 0.17.39" ]
+  "dependencies": [ "base >= 0.17.43" ]
 }

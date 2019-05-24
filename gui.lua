@@ -30,31 +30,31 @@ function gui.regen(player)
     name = "change-map-settings-config-frame",
     direction = "vertical"
   }
-  local config_scroll_pane = config_frame.add{
-    type = "scroll-pane",
-    name = "change-map-settings-config-scroll-pane",
-  }
-  config_scroll_pane.style.maximal_height = 700
 
-  local button_table = config_scroll_pane.add{
-    type = "table",
-    name = "change-map-settings-config-button-table",
-    column_count = 2
+  local button_flow = config_frame.add{
+    type = "flow",
+    direction = "horizontal"
   }
-  button_table.add{
+  button_flow.add{
     type = "button",
     name = "change-map-settings-use-current-button",
     style = mod_gui.button_style,
     caption = {"gui.change-map-settings-use-current-button-caption"}
   }
-  button_table.add{
+  button_flow.add{
     type = "button",
     name = "change-map-settings-default-button",
     style = mod_gui.button_style,
     caption = {"gui.change-map-settings-default-button-caption"}
   }
+
+  local config_subframe = config_frame.add{
+    type = "frame",
+    name = "change-map-settings-config-subframe",
+    style = "b_inner_frame"
+  }
   --make gui sections
-  gui.make_advanced_settings(config_scroll_pane, player.surface)
+  gui.make_advanced_settings(config_subframe, player.surface)
 
   -- start button at the bottom
   local start_button_flow = config_frame.add{
@@ -81,18 +81,18 @@ function gui.regen(player)
     name = "change-map-settings-map-gen-frame",
     direction = "vertical"
   }
-  local map_gen_button_table = map_gen_frame.add{
-    type = "table",
-    name = "change-map-settings-map-gen-button-table",
-    column_count = 2
+  local map_gen_flow1 = map_gen_frame.add{
+    type = "flow",
+    name = "change-map-settings-map-gen-flow-1",
+    direction = "horizontal"
   }
-  map_gen_button_table.add{
+  map_gen_flow1.add{
     type = "button",
     name = "change-map-settings-use-current-map-gen-button",
     style = mod_gui.button_style,
     caption = {"gui.change-map-settings-use-current-button-caption"}
   }
-  map_gen_button_table.add{
+  map_gen_flow1.add{
     type = "button",
     name = "change-map-settings-default-map-gen-button",
     style = mod_gui.button_style,
@@ -100,23 +100,25 @@ function gui.regen(player)
   }
 
   --seed
-  local seed_table = map_gen_frame.add{
-    type = "table",
-    name = "change-map-settings-seed-table",
-    column_count = 2
-  }
-  seed_table.add{
+  local seed_label = map_gen_flow1.add{
     type = "label",
     caption = {"gui.change-map-settings-seed-caption"}
   }
-  seed_table.add{
+  seed_label.style.top_padding = 4
+  seed_label.style.left_padding = 8
+  map_gen_flow1.add{
     type = "textfield",
     name = "change-map-settings-seed-textfield",
     text = "0"
   }
 
   -- rest of map gen settings
-  map_gen_gui.create(map_gen_frame)
+  local map_gen_flow2 = map_gen_frame.add{
+    type = "flow",
+    name = "change-map-settings-map-gen-flow-2",
+    direction = "horizontal"
+  }
+  map_gen_gui.create(map_gen_flow2)
 
   -- start button at the bottom
   local start_button_flow_2 = map_gen_frame.add{
@@ -141,9 +143,10 @@ gui.make_advanced_settings = function(parent, surface)
   local config_table = parent.add{
     type = "table",
     name = "change-map-settings-config-table",
-    column_count = 2
+    column_count = 2,
+    vertical_centering = false
   }
-  config_table.style.horizontal_spacing = 20
+  config_table.style.horizontal_spacing = 12
 
   local map_settings = game.map_settings
   --make different advanced option groups
@@ -167,8 +170,10 @@ gui.make_pollution_settings = function(parent, map_settings)
   local config_more_option_pollution_table = config_more_option_pollution_flow.add{
     type = "table",
     name = "change-map-settings-config-more-pollution-table",
-    column_count = 2
+    column_count = 2,
+    style = "bordered_table"
   }
+  config_more_option_pollution_table.style.column_alignments[2] = "center"
 
   config_more_option_pollution_table.add{
     type = "label",
@@ -179,6 +184,7 @@ gui.make_pollution_settings = function(parent, map_settings)
     name = "change-map-settings-pollution-checkbox",
     state = map_settings.pollution.enabled,
   }
+  config_more_option_pollution_table.children[1].style.horizontally_stretchable = true
   gui.make_config_option(config_more_option_pollution_table, "pollution-dissipation", {"gui-map-generator.pollution-absorption-modifier"}, {"gui-map-generator.pollution-absorption-modifier-description"}, tostring(map_settings.pollution.ageing), 50)
   gui.make_config_option(config_more_option_pollution_table, "enemy-attack-pollution-consumption", {"gui-map-generator.enemy-attack-pollution-consumption-modifier"}, {"gui-map-generator.enemy-attack-pollution-consumption-modifier-description"}, tostring(map_settings.pollution.enemy_attack_pollution_consumption_modifier), 50)
   gui.make_config_option(config_more_option_pollution_table, "pollution-tree-dmg", {"gui-map-generator.minimum-pollution-to-damage-trees"}, {"gui-map-generator.minimum-pollution-to-damage-trees-description"}, tostring(map_settings.pollution.min_pollution_to_damage_trees), 50)
@@ -200,8 +206,10 @@ gui.make_evolution_settings = function(parent, map_settings)
   local config_more_option_evo_table = config_more_option_evo_flow.add{
     type = "table",
     name = "change-map-settings-config-more-evo-table",
-    column_count = 2
+    column_count = 2,
+    style = "bordered_table"
   }
+  config_more_option_evo_table.style.column_alignments[2] = "center"
 
   config_more_option_evo_table.add{
     type = "label",
@@ -212,6 +220,7 @@ gui.make_evolution_settings = function(parent, map_settings)
     name = "change-map-settings-evolution-checkbox",
     state = map_settings.enemy_evolution.enabled,
   }
+  config_more_option_evo_table.children[1].style.horizontally_stretchable = true
   gui.make_config_option(config_more_option_evo_table, "evolution-factor", {"gui-map-generator.evolution"}, {"gui.change-map-settings-evolution-factor-tooltip"}, util.number_to_string(game.forces["enemy"].evolution_factor), 80)
   gui.make_config_option(config_more_option_evo_table, "evolution-time", {"gui-map-generator.evolution-time-factor"}, {"gui-map-generator.evolution-time-factor-description"}, util.number_to_string(map_settings.enemy_evolution.time_factor * 100), 80)
   gui.make_config_option(config_more_option_evo_table, "evolution-destroy", {"gui-map-generator.evolution-destroy-factor"}, {"gui-map-generator.evolution-destroy-factor-description"}, util.number_to_string(map_settings.enemy_evolution.destroy_factor * 100), 80)
@@ -232,8 +241,10 @@ gui.make_expansion_settings = function(parent, map_settings)
   local config_more_option_expansion_table = config_more_option_expansion_flow.add{
     type = "table",
     name = "change-map-settings-config-more-expansion-table",
-    column_count = 2
+    column_count = 2,
+    style = "bordered_table"
   }
+  config_more_option_expansion_table.style.column_alignments[2] = "center"
 
   config_more_option_expansion_table.add{
     type = "label",
@@ -244,6 +255,7 @@ gui.make_expansion_settings = function(parent, map_settings)
     name = "change-map-settings-enemy-expansion-checkbox",
     state = map_settings.enemy_expansion.enabled,
   }
+  config_more_option_expansion_table.children[1].style.horizontally_stretchable = true
   gui.make_config_option(config_more_option_expansion_table, "expansion-distance", {"gui-map-generator.enemy-expansion-maximum-expansion-distance"}, {"gui-map-generator.enemy-expansion-maximum-expansion-distance-description"}, tostring(map_settings.enemy_expansion.max_expansion_distance), 30)
   gui.make_config_option(config_more_option_expansion_table, "expansion-min-size", {"gui-map-generator.enemy-expansion-minimum-expansion-group-size"}, {"gui-map-generator.enemy-expansion-minimum-expansion-group-size-description"}, tostring(map_settings.enemy_expansion.settler_group_min_size), 30)
   gui.make_config_option(config_more_option_expansion_table, "expansion-max-size", {"gui-map-generator.enemy-expansion-maximum-expansion-group-size"}, {"gui-map-generator.enemy-expansion-maximum-expansion-group-size-description"}, tostring(map_settings.enemy_expansion.settler_group_max_size), 30)
@@ -265,8 +277,10 @@ gui.make_general_settings = function(parent, surface)
   local config_more_option_general_table = config_more_option_general_flow.add{
     type = "table",
     name = "change-map-settings-config-more-general-table",
-    column_count = 2
+    column_count = 2,
+    style = "bordered_table"
   }
+  config_more_option_general_table.style.column_alignments[2] = "center"
 
   config_more_option_general_table.add{
     type = "label",
@@ -277,6 +291,7 @@ gui.make_general_settings = function(parent, surface)
     name = "change-map-settings-peaceful-checkbox",
     state = surface.peaceful_mode,
   }
+  config_more_option_general_table.children[1].style.horizontally_stretchable = true
 end
 
 gui.make_config_option = function(parent, name, caption, tooltip, default, max_width)

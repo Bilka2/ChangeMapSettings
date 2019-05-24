@@ -5,7 +5,7 @@ local map_gen_gui = require("map_gen_settings_gui")
 
 local function reset_to_default(player)
   local frame_flow = mod_gui.get_frame_flow(player)
-  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-scroll-pane"]["change-map-settings-config-table"]
+  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-subframe"]["change-map-settings-config-table"]
   --General
   local general_table = config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
   general_table["change-map-settings-peaceful-checkbox"].state = false
@@ -41,16 +41,16 @@ local function set_to_current_map_gen_settings(player)
   local map_gen_frame = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"]
 
   --seed
-  map_gen_frame["change-map-settings-seed-table"]["change-map-settings-seed-textfield"].text = tostring(map_gen_settings.seed)
+  map_gen_frame["change-map-settings-map-gen-flow-1"]["change-map-settings-seed-textfield"].text = tostring(map_gen_settings.seed)
 
   --the rest
-  map_gen_gui.set_to_current(map_gen_frame, map_gen_settings)
+  map_gen_gui.set_to_current(map_gen_frame["change-map-settings-map-gen-flow-2"], map_gen_settings)
 
 end
 
 local function set_to_current_map_settings(player)
   local frame_flow = mod_gui.get_frame_flow(player)
-  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-scroll-pane"]["change-map-settings-config-table"]
+  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-subframe"]["change-map-settings-config-table"]
   --General
   local general_table = config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
   general_table["change-map-settings-peaceful-checkbox"].state = player.surface.peaceful_mode
@@ -88,7 +88,7 @@ end
 
 local function change_map_settings(player)
   local frame_flow = mod_gui.get_frame_flow(player)
-  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-scroll-pane"]["change-map-settings-config-table"]
+  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"]["change-map-settings-config-subframe"]["change-map-settings-config-table"]
 
   -- Reading everything out
   local general_table = config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
@@ -206,10 +206,10 @@ local function reset_map_gen_to_default(player)
   local map_gen_frame = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"]
 
   --seed
-  map_gen_frame["change-map-settings-seed-table"]["change-map-settings-seed-textfield"].text = 0
+  map_gen_frame["change-map-settings-map-gen-flow-1"]["change-map-settings-seed-textfield"].text = 0
 
   --the rest
-  map_gen_gui.reset_to_defaults(map_gen_frame)
+  map_gen_gui.reset_to_defaults(map_gen_frame["change-map-settings-map-gen-flow-2"])
 end
 
 local function change_map_gen_settings(player)
@@ -218,7 +218,7 @@ local function change_map_gen_settings(player)
 
   --all the stuff
   local status, retval = pcall(function(map_gen_frame)
-      return map_gen_gui.read(map_gen_frame)
+      return map_gen_gui.read(map_gen_frame["change-map-settings-map-gen-flow-2"])
     end, map_gen_frame)
 
   if not status then
@@ -237,7 +237,7 @@ local function change_map_gen_settings(player)
   settings.autoplace_settings = player.surface.map_gen_settings.autoplace_settings
 
   --seed
-  local seed = util.textfield_to_uint(map_gen_frame["change-map-settings-seed-table"]["change-map-settings-seed-textfield"])
+  local seed = util.textfield_to_uint(map_gen_frame["change-map-settings-map-gen-flow-1"]["change-map-settings-seed-textfield"])
   if seed and seed == 0 then
     settings.seed = math.random(0, 4294967295)
   elseif seed then
