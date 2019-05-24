@@ -36,16 +36,6 @@ function gui.regen(player)
   }
   config_scroll_pane.style.maximal_height = 700
 
-  local notice = config_scroll_pane.add{
-    type = "label",
-    caption = "NOTE:\nThe 0.17 version of this mod is missing configuration options because those are missing from the lua api.\nThe mod will remain in this state until the lua api is changed to properly expose everything."
-  }
-  notice.style.single_line = false
-  notice.style.maximal_width = 400
-  notice.style.font_color = {r=1, g= 0.1}
-  notice.style.font = "default-bold"
-  notice.style.bottom_padding = 5
-
   local button_table = config_scroll_pane.add{
     type = "table",
     name = "change-map-settings-config-button-table",

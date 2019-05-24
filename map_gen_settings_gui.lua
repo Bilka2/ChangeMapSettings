@@ -12,17 +12,87 @@ map_gen_gui.create = function(parent)
   scroll_pane.style.maximal_height = 400
   scroll_pane.visible = true
 
-  --map_gen_gui.create_map_type_selector(parent) TODO Bilka
-
   map_gen_gui.create_resource_table(scroll_pane)
+  map_gen_gui.create_expression_selectors(map_gen_gui.create_expression_selectors_parent(parent))
   map_gen_gui.create_controls_with_scale_table(parent)
   map_gen_gui.create_cliffs_table(parent)
   map_gen_gui.create_climate_table(parent)
   map_gen_gui.create_enemies_table(parent)
 end
 
---map_gen_gui.create_map_type_selector = function(parent) TODO Bilka
---end
+map_gen_gui.create_expression_selectors_parent = function(parent)
+  local table = parent.add{
+    type = "table",
+    name = ENTIRE_PREFIX .. "-expression-selectors-table",
+    column_count = 1,
+    style = "bordered_table"
+  }
+  table.style.horizontally_stretchable = true
+  local flow = table.add{
+    type = "flow",
+    name = ENTIRE_PREFIX .. "-expression-selectors-flow",
+    direction = "vertical"
+  }
+  flow.style.horizontally_stretchable = true
+  return flow
+end
+
+map_gen_gui.create_expression_selectors = function(parent)
+  parent.add{
+    type = "label",
+    caption = {"gui-map-generator.terrain-generators-group-title"},
+    style = "caption_label"
+  }
+
+  local noise_expressions = util.get_relevant_noise_expressions()
+  for intended_property, expressions in pairs(noise_expressions) do
+    map_gen_gui.make_expression_selector(intended_property, expressions, parent, false)
+  end
+end
+
+map_gen_gui.make_expression_selector = function(intended_property, expressions, parent, force_creation)
+  if table_size(expressions) == 1 and not force_creation then return end -- dont make dropdowns if there is only one option
+
+  local flow = parent.add{
+    type = "flow",
+    name = ENTIRE_PREFIX .. "-" .. intended_property .. "-flow",
+    direction = "horizontal"
+  }
+
+  flow.add{
+    type = "label",
+    caption = {"" , {"noise-property." .. intended_property}, intended_property == "elevation" and {"", "/",  {"gui-map-generator.map-type"}} or ""}
+  }
+  local stretcher = flow.add{
+    type = "flow",
+    direction = "horizontal"
+  }
+  stretcher.style.horizontally_stretchable = true
+
+  local dropdown_data = map_gen_gui.get_expression_dropdown_data(expressions)
+  flow.add{
+    type = "drop-down",
+    name =  ENTIRE_PREFIX .. "-" .. intended_property .. "-drop-down",
+    items = dropdown_data.items,
+    selected_index = dropdown_data.selected_index
+  }
+
+  return flow
+end
+
+map_gen_gui.get_expression_dropdown_data = function(expressions)
+  local items = {}
+  local lowest_order = expressions[1].order
+  local selected_index = 1
+  for i, expression in pairs(expressions) do
+    items[#items+1] = {"noise-expression." .. expression.name}
+    if expression.order < lowest_order then
+      lowest_order = expression.order
+      selected_index = i
+    end
+  end
+  return {items = items, selected_index = selected_index}
+end
 
 map_gen_gui.create_resource_table = function(parent)
   local table = parent.add{
@@ -36,19 +106,19 @@ map_gen_gui.create_resource_table = function(parent)
   table.add{type = "label"}
   table.add{
     type = "label",
-    caption = {"gui-map-generator.frequency"},
+    caption = util.add_info_icon_to_localized_string({"gui-map-generator.frequency"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.resource-frequency-description"}
   }
   table.add{
     type = "label",
-    caption = {"gui-map-generator.size"},
+    caption = util.add_info_icon_to_localized_string({"gui-map-generator.size"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.resource-size-description"}
   }
   table.add{
     type = "label",
-    caption = {"gui-map-generator.richness"},
+    caption = util.add_info_icon_to_localized_string({"gui-map-generator.richness"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.resource-richness-description"}
   }
@@ -72,13 +142,13 @@ map_gen_gui.create_controls_with_scale_table = function(parent)
   table.add{type = "label"}
   table.add{
     type = "label",
-    caption = {"gui-map-generator.scale"},
+    caption = util.add_info_icon_to_localized_string({"gui-map-generator.scale"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.terrain-scale-description"}
   }
   table.add{
     type = "label",
-    caption = {"gui-map-generator.coverage"},
+    caption = util.add_info_icon_to_localized_string({"gui-map-generator.coverage"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.terrain-coverage-description"}
   }
@@ -106,13 +176,13 @@ map_gen_gui.create_cliffs_table = function(parent)
   table.add{type = "label"}
   table.add{
     type = "label",
-    caption = {"gui-map-generator.cliff-frequency"},
+    caption = util.add_info_icon_to_localized_string({"gui-map-generator.cliff-frequency"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.cliff-frequency-description"}
   }
   table.add{
     type = "label",
-    caption = {"gui-map-generator.cliff-continuity"},
+    caption = util.add_info_icon_to_localized_string({"gui-map-generator.cliff-continuity"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.cliff-continuity-description"}
   }
@@ -133,13 +203,13 @@ map_gen_gui.create_climate_table = function(parent)
   table.add{type = "label"}
   table.add{
     type = "label",
-    caption = {"gui-map-generator.scale"},
+    caption = util.add_info_icon_to_localized_string({"gui-map-generator.scale"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.terrain-scale-description"}
   }
   table.add{
     type = "label",
-    caption = {"gui-map-generator.bias"},
+    caption = util.add_info_icon_to_localized_string({"gui-map-generator.bias"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.terrain-bias-description"}
   }
@@ -160,13 +230,13 @@ map_gen_gui.create_enemies_table = function(parent)
   table.add{type = "label"}
   table.add{
     type = "label",
-    caption = {"gui-map-generator.frequency"},
+    caption = util.add_info_icon_to_localized_string({"gui-map-generator.frequency"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.enemy-frequency-description"}
   }
   table.add{
     type = "label",
-    caption = {"gui-map-generator.size"},
+    caption = util.add_info_icon_to_localized_string({"gui-map-generator.size"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.enemy-size-description"}
   }
@@ -182,7 +252,8 @@ map_gen_gui.create_enemies_table = function(parent)
   -- starting area size
   table.add{
     type = "label",
-    caption = {"gui-map-generator.starting-area-size"}
+    caption = util.add_info_icon_to_localized_string({"gui-map-generator.starting-area-size"}),
+    tooltip = {"gui-map-generator.starting-area-size-description"}
   }
   table.add{type = "label"}
   table.add{
@@ -199,10 +270,14 @@ map_gen_gui.make_autoplace_options = function(name, parent, has_richness)
       caption = {"autoplace-control-names." .. name}
     }
   else
-    parent.add{
+    local label = parent.add{
       type = "label",
       caption = {"gui-map-generator." .. name}
     }
+    if name == "moisture" or name == "aux" then
+      label.tooltip = {"gui-map-generator." .. name .. "-description"}
+      label.caption = util.add_info_icon_to_localized_string(label.caption)
+    end
   end
   parent.add{
     type = "textfield",
@@ -224,9 +299,18 @@ map_gen_gui.make_autoplace_options = function(name, parent, has_richness)
 end
 
 map_gen_gui.reset_to_defaults = function(parent)
+  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "-expression-selectors-table"][ENTIRE_PREFIX .. "-expression-selectors-flow"]
   local resource_table = parent[ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .."resource-table"]
   local controls_with_scale_table = parent[ENTIRE_PREFIX .."controls-with-scale-table"]
   local enemies_table = parent[ENTIRE_PREFIX .."enemies-table"]
+  local climate_table = parent[ENTIRE_PREFIX .."climate-table"]
+  local cliffs_table = parent[ENTIRE_PREFIX .."cliffs-table"]
+
+  -- expression selectors
+  -- making these defaults work with existing GUI that may or may not have more or less dropdowns than the default sounds like a nightmare. So let's just recreate it.
+  expression_selectors_flow.clear()
+  map_gen_gui.create_expression_selectors(expression_selectors_flow)
+
 
   -- water stuff
   controls_with_scale_table[ENTIRE_PREFIX .. "water-freq"].text = "1"
@@ -251,22 +335,47 @@ map_gen_gui.reset_to_defaults = function(parent)
   end
 
   -- moisture and terrain type
-  local climate_table = parent[ENTIRE_PREFIX .."climate-table"]
   climate_table[ENTIRE_PREFIX .. "moisture-freq"].text = "1"
   climate_table[ENTIRE_PREFIX .. "moisture-size"].text = "0"
   climate_table[ENTIRE_PREFIX .. "aux-freq"].text = "1"
   climate_table[ENTIRE_PREFIX .. "aux-size"].text = "0"
 
   -- cliffs
-  local cliffs_table = parent[ENTIRE_PREFIX .."cliffs-table"]
   cliffs_table[ENTIRE_PREFIX .. "cliffs-freq"].text = "1"
   cliffs_table[ENTIRE_PREFIX .. "cliffs-size"].text = "1"
 end
 
 map_gen_gui.set_to_current = function(parent, map_gen_settings)
+  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "-expression-selectors-table"][ENTIRE_PREFIX .. "-expression-selectors-flow"]
   local resource_table = parent[ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .."resource-table"]
   local controls_with_scale_table = parent[ENTIRE_PREFIX .."controls-with-scale-table"]
   local enemies_table = parent[ENTIRE_PREFIX .."enemies-table"]
+  local climate_table = parent[ENTIRE_PREFIX .."climate-table"]
+  local cliffs_table = parent[ENTIRE_PREFIX .."cliffs-table"]
+  local property_expression_names = map_gen_settings.property_expression_names
+  local autoplace_controls = map_gen_settings.autoplace_controls
+  local cliff_settings = map_gen_settings.cliff_settings
+
+  -- expression selectors
+  local possible_properties = util.get_possible_noise_expression_properties()
+  local relevant_noise_expressions = util.get_relevant_noise_expressions()
+  for _, property in pairs(possible_properties) do
+    local selected_expression = property_expression_names[property]
+    if selected_expression then
+      local noise_expressions_list_item
+      if game.named_noise_expressions[selected_expression] then -- proper noise expression, not just some number
+        noise_expressions_list_item = {"noise-expression." .. selected_expression}
+      else
+        noise_expressions_list_item = selected_expression -- number that is really a string. we just use it directly
+      end
+      local property_flow = expression_selectors_flow[ENTIRE_PREFIX .. "-" .. property .. "-flow"]
+      if not property_flow then
+        property_flow = map_gen_gui.make_expression_selector(property, relevant_noise_expressions[property], expression_selectors_flow, true)
+      end
+      local dropdown = property_flow[ENTIRE_PREFIX .. "-" .. property .. "-drop-down"]
+      map_gen_gui.select_in_dropdown_or_add_and_select(noise_expressions_list_item, dropdown) -- select (optionally add) the item
+    end
+  end
 
   -- water stuff
   controls_with_scale_table[ENTIRE_PREFIX .. "water-freq"].text = util.number_to_string(1 / map_gen_settings.terrain_segmentation) -- inverse
@@ -275,7 +384,6 @@ map_gen_gui.set_to_current = function(parent, map_gen_settings)
   enemies_table[ENTIRE_PREFIX .. "starting-area-size"].text = util.number_to_string(map_gen_settings.starting_area)
 
   -- resources and terrain and enemies
-  local autoplace_controls = map_gen_settings.autoplace_controls
   local valid_autoplace_controls = game.autoplace_control_prototypes
   if autoplace_controls then
     for name, autoplace_control in pairs(autoplace_controls) do
@@ -296,70 +404,104 @@ map_gen_gui.set_to_current = function(parent, map_gen_settings)
   end
 
   -- moisture and terrain type
-  local climate_table = parent[ENTIRE_PREFIX .."climate-table"]
-  climate_table[ENTIRE_PREFIX .. "moisture-freq"].text = (1 / map_gen_settings.property_expression_names["control-setting:moisture:frequency:multiplier"]) or "1" -- inverse
-  climate_table[ENTIRE_PREFIX .. "moisture-size"].text = map_gen_settings.property_expression_names["control-setting:moisture:bias"] or "0"
-  climate_table[ENTIRE_PREFIX .. "aux-freq"].text = (1 / map_gen_settings.property_expression_names["control-setting:aux:frequency:multiplier"]) or "1" -- inverse
-  climate_table[ENTIRE_PREFIX .. "aux-size"].text = map_gen_settings.property_expression_names["control-setting:aux:bias"] or "0"
+  climate_table[ENTIRE_PREFIX .. "moisture-freq"].text = 1 / (property_expression_names["control-setting:moisture:frequency:multiplier"] or "1") -- inverse
+  climate_table[ENTIRE_PREFIX .. "moisture-size"].text = property_expression_names["control-setting:moisture:bias"] or "0"
+  climate_table[ENTIRE_PREFIX .. "aux-freq"].text = 1 / (property_expression_names["control-setting:aux:frequency:multiplier"] or "1") -- inverse
+  climate_table[ENTIRE_PREFIX .. "aux-size"].text = property_expression_names["control-setting:aux:bias"] or "0"
 
   -- cliffs
-  local cliffs_table = parent[ENTIRE_PREFIX .."cliffs-table"]
-  local cliff_settings = map_gen_settings.cliff_settings
   cliffs_table[ENTIRE_PREFIX .. "cliffs-freq"].text = util.number_to_string(40 / cliff_settings.cliff_elevation_interval) -- inverse with 40
   cliffs_table[ENTIRE_PREFIX .. "cliffs-size"].text = util.number_to_string(cliff_settings.richness)
 end
 
-map_gen_gui.read = function(parent, player)
-  local map_gen_settings = {}
+
+map_gen_gui.select_in_dropdown_or_add_and_select = function(item_to_select, dropdown)
+  local items = dropdown.items
+  for index, item in pairs(items) do
+    if util.compare_localized_string(item_to_select, item) then
+      dropdown.selected_index = index
+      return -- found in dropdown
+    end
+  end
+
+  local index = #items+1
+  dropdown.add_item(item_to_select, index) -- add to dropdown
+  dropdown.selected_index = index
+end
+
+map_gen_gui.read = function(parent)
+  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "-expression-selectors-table"][ENTIRE_PREFIX .. "-expression-selectors-flow"]
   local resource_table = parent[ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .. "resource-table"]
   local controls_with_scale_table = parent[ENTIRE_PREFIX .."controls-with-scale-table"]
   local enemies_table = parent[ENTIRE_PREFIX .."enemies-table"]
+  local climate_table = parent[ENTIRE_PREFIX .."climate-table"]
+  local cliffs_table = parent[ENTIRE_PREFIX .."cliffs-table"]
+  local map_gen_settings = {}
+  local property_expression_names_mine = {}
+  local autoplace_controls_mine = {}
+  local cliff_settings_mine = {}
+
+  -- expression selectors
+  local possible_properties = util.get_possible_noise_expression_properties()
+  for _, property in pairs(possible_properties) do
+    local property_flow = expression_selectors_flow[ENTIRE_PREFIX .. "-" .. property .. "-flow"]
+    if property_flow then
+      local dropdown = property_flow[ENTIRE_PREFIX .. "-" .. property .. "-drop-down"]
+      local selected_noise_expressions_list_item = dropdown.items[dropdown.selected_index]
+      -- above is a localized string in form of {"noise-expression." .. selected_expression} or selected_expression
+      -- parse it to get selected_expression
+      local selected_expression
+      if type(selected_noise_expressions_list_item) == "string" then -- selected_expression
+        selected_expression = selected_noise_expressions_list_item
+      else -- {"noise-expression." .. selected_expression}
+        selected_expression = selected_noise_expressions_list_item[1]:sub(string.len("noise-expression.") + 1)
+      end
+      property_expression_names_mine[property] = selected_expression
+    end
+  end
 
   -- water stuff
-  map_gen_settings.terrain_segmentation = 1 / util.textfield_to_number_with_error(controls_with_scale_table[ENTIRE_PREFIX .. "water-freq"], player) -- inverse
-  map_gen_settings.water = util.textfield_to_number_with_error(controls_with_scale_table[ENTIRE_PREFIX .. "water-size"], player)
+  map_gen_settings.terrain_segmentation = 1 / util.textfield_to_number_with_error(controls_with_scale_table[ENTIRE_PREFIX .. "water-freq"]) -- inverse
+  map_gen_settings.water = util.textfield_to_number_with_error(controls_with_scale_table[ENTIRE_PREFIX .. "water-size"])
   -- starting area
-  map_gen_settings.starting_area = util.textfield_to_number_with_error(enemies_table[ENTIRE_PREFIX .. "starting-area-size"], player)
+  map_gen_settings.starting_area = util.textfield_to_number_with_error(enemies_table[ENTIRE_PREFIX .. "starting-area-size"])
 
   local autoplace_control_prototypes = game.autoplace_control_prototypes
-  local autoplace_controls_mine = {}
   -- resources and terrain and enemies
   for _, control in pairs(autoplace_control_prototypes) do
     if control.category == "resource" then
       autoplace_controls_mine[control.name] = {
-        frequency = util.textfield_to_number_with_error(resource_table[ENTIRE_PREFIX .. control.name .. "-freq"], player),
-        size = util.textfield_to_number_with_error(resource_table[ENTIRE_PREFIX .. control.name .. "-size"], player),
-        richness = util.textfield_to_number_with_error(resource_table[ENTIRE_PREFIX .. control.name .. "-richn"], player)
+        frequency = util.textfield_to_number_with_error(resource_table[ENTIRE_PREFIX .. control.name .. "-freq"]),
+        size = util.textfield_to_number_with_error(resource_table[ENTIRE_PREFIX .. control.name .. "-size"]),
+        richness = util.textfield_to_number_with_error(resource_table[ENTIRE_PREFIX .. control.name .. "-richn"])
       }
     elseif control.category == "terrain" then
       autoplace_controls_mine[control.name] = {
-        frequency = 1 / util.textfield_to_number_with_error(controls_with_scale_table[ENTIRE_PREFIX .. control.name .. "-freq"], player), -- inverse
-        size = util.textfield_to_number_with_error(controls_with_scale_table[ENTIRE_PREFIX .. control.name .. "-size"], player)
+        frequency = 1 / util.textfield_to_number_with_error(controls_with_scale_table[ENTIRE_PREFIX .. control.name .. "-freq"]), -- inverse
+        size = util.textfield_to_number_with_error(controls_with_scale_table[ENTIRE_PREFIX .. control.name .. "-size"])
       }
     elseif control.category == "enemy" then
       autoplace_controls_mine[control.name] = {
-        frequency = util.textfield_to_number_with_error(enemies_table[ENTIRE_PREFIX .. control.name .. "-freq"], player),
-        size = util.textfield_to_number_with_error(enemies_table[ENTIRE_PREFIX .. control.name .. "-size"], player)
+        frequency = util.textfield_to_number_with_error(enemies_table[ENTIRE_PREFIX .. control.name .. "-freq"]),
+        size = util.textfield_to_number_with_error(enemies_table[ENTIRE_PREFIX .. control.name .. "-size"])
       }
     end
   end
-  map_gen_settings.autoplace_controls = autoplace_controls_mine
 
   -- moisture and terrain type
-  local climate_table = parent[ENTIRE_PREFIX .."climate-table"]
-  map_gen_settings.property_expression_names["control-setting:moisture:frequency:multiplier"] = 1 / util.textfield_to_number_with_error(climate_table[ENTIRE_PREFIX .. "moisture-freq"], player)
-  map_gen_settings.property_expression_names["control-setting:moisture:bias"] = util.textfield_to_number_with_error(climate_table[ENTIRE_PREFIX .. "moisture-size"], player)
-  map_gen_settings.property_expression_names["control-setting:aux:frequency:multiplier"] = 1 / util.textfield_to_number_with_error(climate_table[ENTIRE_PREFIX .. "aux-freq"], player)
-  map_gen_settings.property_expression_names["control-setting:aux:bias"] = util.textfield_to_number_with_error(climate_table[ENTIRE_PREFIX .. "aux-size"], player)
+  property_expression_names_mine["control-setting:moisture:frequency:multiplier"] = 1 / util.textfield_to_number_with_error(climate_table[ENTIRE_PREFIX .. "moisture-freq"]) -- inverse
+  property_expression_names_mine["control-setting:moisture:bias"] = util.textfield_to_number_with_error(climate_table[ENTIRE_PREFIX .. "moisture-size"])
+  property_expression_names_mine["control-setting:aux:frequency:multiplier"] = 1 / util.textfield_to_number_with_error(climate_table[ENTIRE_PREFIX .. "aux-freq"]) -- inverse
+  property_expression_names_mine["control-setting:aux:bias"] = util.textfield_to_number_with_error(climate_table[ENTIRE_PREFIX .. "aux-size"])
 
   -- cliffs
-  local cliffs_table = parent[ENTIRE_PREFIX .."cliffs-table"]
-  local cliff_settings = {}
-  cliff_settings.name = "cliff"
-  cliff_settings.cliff_elevation_interval = 40 / util.textfield_to_number_with_error(cliffs_table["change-map-settings-map-gen-cliffs-freq"], player) -- inverse with 40
-  cliff_settings.richness = util.textfield_to_number_with_error(cliffs_table["change-map-settings-map-gen-cliffs-size"], player)
-  map_gen_settings.cliff_settings = cliff_settings
+  cliff_settings_mine.name = "cliff"
+  cliff_settings_mine.cliff_elevation_interval = 40 / util.textfield_to_number_with_error(cliffs_table["change-map-settings-map-gen-cliffs-freq"]) -- inverse with 40
+  cliff_settings_mine.richness = util.textfield_to_number_with_error(cliffs_table["change-map-settings-map-gen-cliffs-size"])
 
+  map_gen_settings.autoplace_controls = autoplace_controls_mine
+  map_gen_settings.property_expression_names = property_expression_names_mine
+  map_gen_settings.cliff_settings = cliff_settings_mine
   return map_gen_settings
 end
 

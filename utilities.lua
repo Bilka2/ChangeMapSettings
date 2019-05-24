@@ -1,4 +1,5 @@
 local util = {}
+local tableutil = require("util").table
 
 util.textfield_to_uint = function(textfield)
   local number = tonumber(textfield.text)
@@ -13,15 +14,19 @@ util.textfield_to_number = function(textfield)
   local number = tonumber(textfield.text)
   if textfield.text and number then
     return number
+  elseif textfield.text and textfield.text == "inf" then
+    return 1/0
+  elseif textfield.text and textfield.text == "-inf" then
+    return -(1/0)
   else
     return false
   end
 end
 
-util.textfield_to_number_with_error = function(textfield, player)
+util.textfield_to_number_with_error = function(textfield)
   local number = util.textfield_to_number(textfield)
   if not number then
-    player.print(textfield.name .. " must be a number.")
+    error(textfield.name .. " must be a number.")
   end
   return number
 end
@@ -46,15 +51,35 @@ util.check_bounds = function(input, min, max, player, error)
   return false
 end
 
--- returns table = {["resource-name"] = true, ...}
-util.get_table_of_resources = function(number)
-  local resources = {}
-  for _, prototype in pairs(game.entity_prototypes) do
-    if prototype.type == "resource" then
-      resources[prototype.name] = true
+-- returns table = {["intended-property"] = {name = "expression-name", order = "order"}, ...}
+util.get_relevant_noise_expressions = function()
+  local expressions = {}
+  for name, named_noise_expression in pairs(game.named_noise_expressions) do
+    local intended_property = named_noise_expression.intended_property
+    if intended_property ~= "" then
+      expressions[intended_property] = expressions[intended_property] or {}
+      table.insert(expressions[intended_property], {name = name, order = named_noise_expression.order})
     end
   end
-  return resources
+  return expressions
+end
+
+util.add_info_icon_to_localized_string = function(localized_string)
+  return {"", localized_string, " [img=info]"}
+end
+
+util.get_possible_noise_expression_properties = function()
+  return { "elevation", "temperature", "moisture", "aux", "starting-lake-noise-amplitude"}
+end
+
+util.compare_localized_string = function(string1, string2)
+  if type(string1) == "string" then
+    string1 = {"", string1}
+  end
+  if type(string2) == "string" then
+    string2 = {"", string2}
+  end
+  return tableutil.compare(string1, string2)
 end
 
 return util

@@ -1,7 +1,8 @@
 local mod_gui = require("mod-gui")
 local gui = require("gui")
 local util = require("utilities")
-local map_gen_gui = require("map_gen_settings_gui")
+local util2 = require("util")
+local map_gen_gui = util2.table.deepcopy(require("map_gen_settings_gui"))
 
 local function reset_to_default(player)
   local frame_flow = mod_gui.get_frame_flow(player)
@@ -14,8 +15,8 @@ local function reset_to_default(player)
   local evo_table = config_table["change-map-settings-config-more-evo-flow"]["change-map-settings-config-more-evo-table"]
   evo_table["change-map-settings-evolution-checkbox"].state = true
   evo_table["change-map-settings-evolution-factor-textfield"].text = "0"
-  evo_table["change-map-settings-evolution-time-textfield"].text = "0.000400"
-  evo_table["change-map-settings-evolution-destroy-textfield"].text = "0.200000"
+  evo_table["change-map-settings-evolution-time-textfield"].text = "0.0004"
+  evo_table["change-map-settings-evolution-destroy-textfield"].text = "0.2"
   evo_table["change-map-settings-evolution-pollution-textfield"].text = "0.000090"
   --Pollution
   local pollution_table = config_table["change-map-settings-config-more-pollution-flow"]["change-map-settings-config-more-pollution-table"]
@@ -217,11 +218,19 @@ local function change_map_gen_settings(player)
   local map_gen_frame = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"]
 
   --all the stuff
-  local settings = map_gen_gui.read(map_gen_frame, player)
+  local status, retval = pcall(function(map_gen_frame)
+      return map_gen_gui.read(map_gen_frame)
+    end, map_gen_frame)
+
+  if not status then
+    player.print(retval)
+    player.print({"msg.change-map-settings-apply-failed"})
+    return
+  end
+  local settings = retval
 
   -- fill out missing fields with the current settings
   settings.peaceful_mode = player.surface.peaceful_mode
-  settings.property_expression_names = player.surface.map_gen_settings.property_expression_names -- TODO Bilka remove this because it undoes the temperature stuff
   settings.starting_points = player.surface.map_gen_settings.starting_points
   settings.width = player.surface.map_gen_settings.width
   settings.height = player.surface.map_gen_settings.height
