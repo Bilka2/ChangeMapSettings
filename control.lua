@@ -272,7 +272,13 @@ script.on_event({defines.events.on_gui_click}, function(event)
   local frame_flow = mod_gui.get_frame_flow(player)
   local clicked_name = event.element.name
   if clicked_name == "change-map-settings-toggle-config" then
-    frame_flow["change-map-settings-main-flow"].visible = not frame_flow["change-map-settings-main-flow"].visible
+    local main_flow = frame_flow["change-map-settings-main-flow"]
+    if not main_flow then
+      gui.regen(player)
+      set_to_current_all(player)
+      main_flow = frame_flow["change-map-settings-main-flow"]
+    end
+    main_flow.visible = not main_flow.visible
   elseif clicked_name == "change-map-settings-start-button" then
     if player.admin then
       change_map_settings(player)

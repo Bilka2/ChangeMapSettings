@@ -22,6 +22,7 @@ map_gen_gui.create = function(parent)
   local resource_scroll_pane = frame1.add{
     type = "scroll-pane",
     name = ENTIRE_PREFIX .. "resource-scroll-pane",
+    style ="scroll_pane_light"
   }
   resource_scroll_pane.style.maximal_height = 300
   map_gen_gui.create_resource_table(resource_scroll_pane)
@@ -31,8 +32,9 @@ map_gen_gui.create = function(parent)
   local terrain_scroll_pane = frame2.add{
     type = "scroll-pane",
     name = ENTIRE_PREFIX .. "terrain-scroll-pane",
+    style ="scroll_pane_light"
   }
-  terrain_scroll_pane.style.maximal_height = 300
+  terrain_scroll_pane.style.maximal_height = 150
   map_gen_gui.create_controls_with_scale_table(terrain_scroll_pane)
   map_gen_gui.create_cliffs_table(frame2)
   map_gen_gui.create_climate_table(frame2)
