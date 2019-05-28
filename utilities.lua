@@ -2,12 +2,11 @@ local util = {}
 local tableutil = require("util").table
 
 util.textfield_to_uint = function(textfield)
-  local number = tonumber(textfield.text)
-  if textfield.text and number and (number >= 0) and (number <= 4294967295) and (math.floor(number) == number) then
+  local number = util.textfield_to_number(textfield)
+  if number and (number >= 0) and (number <= 4294967295) and (math.floor(number) == number) then
     return number
-  else
-    return false
   end
+  return false
 end
 
 util.textfield_to_number = function(textfield)
@@ -18,9 +17,8 @@ util.textfield_to_number = function(textfield)
     return 1/0
   elseif textfield.text and textfield.text == "-inf" then
     return -(1/0)
-  else
-    return false
   end
+  return false
 end
 
 util.textfield_to_number_with_error = function(textfield)
@@ -43,11 +41,11 @@ util.number_to_string = function(number) -- shows up to 6 decimal places
   return tostring(math.floor(number * 1000000 + 0.5) / 1000000) -- 0.5 for "rounding"
 end
 
-util.check_bounds = function(input, min, max, player, error)
+util.check_bounds = function(input, min, max, err)
   if input and (input >= min) and (input <= max) then
     return input
   end
-  player.print(error)
+  error(err) -- because localized string
   return false
 end
 
@@ -64,15 +62,15 @@ util.get_relevant_noise_expressions = function()
   return expressions
 end
 
-util.add_info_icon_to_localized_string = function(localized_string)
-  return {"", localized_string, " [img=info]"}
+util.add_info_icon_to_string = function(string)
+  return {"", string, " [img=info]"}
 end
 
 util.get_possible_noise_expression_properties = function()
   return { "elevation", "temperature", "moisture", "aux", "starting-lake-noise-amplitude"}
 end
 
-util.compare_localized_string = function(string1, string2)
+util.compare_localized_strings = function(string1, string2)
   if type(string1) == "string" then
     string1 = {"", string1}
   end

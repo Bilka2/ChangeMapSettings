@@ -1,10 +1,11 @@
 local mod_gui = require("mod-gui")
 local util = require("utilities")
 local map_gen_gui = require("map_gen_settings_gui")
+local map_settings_gui = require("map_settings_gui")
 local gui = {}
 
 -- GUI --
-function gui.regen(player)
+gui.regen = function(player)
   gui.kill(player)
   --toggle button
   local button_flow = mod_gui.get_button_flow(player)
@@ -150,117 +151,10 @@ gui.make_advanced_settings = function(parent, surface)
 
   local map_settings = game.map_settings
   --make different advanced option groups
-  gui.make_pollution_settings(config_table, map_settings)
-  gui.make_expansion_settings(config_table, map_settings)
-  gui.make_evolution_settings(config_table, map_settings)
+  map_settings_gui.make_pollution_settings(config_table, map_settings)
+  map_settings_gui.make_expansion_settings(config_table, map_settings)
+  map_settings_gui.make_evolution_settings(config_table, map_settings)
   gui.make_general_settings(config_table, surface)
-end
-
-gui.make_pollution_settings = function(parent, map_settings)
-  local config_more_option_pollution_flow = parent.add{
-    type = "flow",
-    name = "change-map-settings-config-more-pollution-flow",
-    direction = "vertical"
-  }
-  config_more_option_pollution_flow.add{
-    type = "label",
-    caption = {"gui-map-generator.pollution"},
-    style = "caption_label"
-  }
-  local config_more_option_pollution_table = config_more_option_pollution_flow.add{
-    type = "table",
-    name = "change-map-settings-config-more-pollution-table",
-    column_count = 2,
-    style = "bordered_table"
-  }
-  config_more_option_pollution_table.style.column_alignments[2] = "center"
-
-  config_more_option_pollution_table.add{
-    type = "label",
-    caption = {"gui-map-generator.pollution"}
-  }
-  config_more_option_pollution_table.add{
-    type = "checkbox",
-    name = "change-map-settings-pollution-checkbox",
-    state = map_settings.pollution.enabled,
-  }
-  config_more_option_pollution_table.children[1].style.horizontally_stretchable = true
-  gui.make_config_option(config_more_option_pollution_table, "pollution-dissipation", {"gui-map-generator.pollution-absorption-modifier"}, {"gui-map-generator.pollution-absorption-modifier-description"}, tostring(map_settings.pollution.ageing), 50)
-  gui.make_config_option(config_more_option_pollution_table, "enemy-attack-pollution-consumption", {"gui-map-generator.enemy-attack-pollution-consumption-modifier"}, {"gui-map-generator.enemy-attack-pollution-consumption-modifier-description"}, tostring(map_settings.pollution.enemy_attack_pollution_consumption_modifier), 50)
-  gui.make_config_option(config_more_option_pollution_table, "pollution-tree-dmg", {"gui-map-generator.minimum-pollution-to-damage-trees"}, {"gui-map-generator.minimum-pollution-to-damage-trees-description"}, tostring(map_settings.pollution.min_pollution_to_damage_trees), 50)
-  gui.make_config_option(config_more_option_pollution_table, "pollution-tree-absorb", {"gui-map-generator.pollution-absorbed-per-tree-damaged"}, {"gui-map-generator.pollution-absorbed-per-tree-damaged-description"}, tostring(map_settings.pollution.pollution_restored_per_tree_damage), 50)
-  gui.make_config_option(config_more_option_pollution_table, "pollution-diffusion", {"gui.change-map-settings-in-unit", {"gui-map-generator.pollution-diffusion-ratio"}, {"gui.change-map-settings-percent"}}, {"gui-map-generator.pollution-diffusion-ratio-description"}, tostring(map_settings.pollution.diffusion_ratio * 100), 50)
-end
-
-gui.make_evolution_settings = function(parent, map_settings)
-  local config_more_option_evo_flow = parent.add{
-    type = "flow",
-    name = "change-map-settings-config-more-evo-flow",
-    direction = "vertical"
-  }
-  config_more_option_evo_flow.add{
-    type = "label",
-    caption = {"gui-map-generator.evolution"},
-    style = "caption_label"
-  }
-  local config_more_option_evo_table = config_more_option_evo_flow.add{
-    type = "table",
-    name = "change-map-settings-config-more-evo-table",
-    column_count = 2,
-    style = "bordered_table"
-  }
-  config_more_option_evo_table.style.column_alignments[2] = "center"
-
-  config_more_option_evo_table.add{
-    type = "label",
-    caption = {"gui-map-generator.evolution"}
-  }
-  config_more_option_evo_table.add{
-    type = "checkbox",
-    name = "change-map-settings-evolution-checkbox",
-    state = map_settings.enemy_evolution.enabled,
-  }
-  config_more_option_evo_table.children[1].style.horizontally_stretchable = true
-  gui.make_config_option(config_more_option_evo_table, "evolution-factor", {"gui-map-generator.evolution"}, {"gui.change-map-settings-evolution-factor-tooltip"}, util.number_to_string(game.forces["enemy"].evolution_factor), 80)
-  gui.make_config_option(config_more_option_evo_table, "evolution-time", {"gui-map-generator.evolution-time-factor"}, {"gui-map-generator.evolution-time-factor-description"}, util.number_to_string(map_settings.enemy_evolution.time_factor * 100), 80)
-  gui.make_config_option(config_more_option_evo_table, "evolution-destroy", {"gui-map-generator.evolution-destroy-factor"}, {"gui-map-generator.evolution-destroy-factor-description"}, util.number_to_string(map_settings.enemy_evolution.destroy_factor * 100), 80)
-  gui.make_config_option(config_more_option_evo_table, "evolution-pollution", {"gui-map-generator.evolution-pollution-factor"}, {"gui-map-generator.evolution-pollution-factor-description"}, util.number_to_string(map_settings.enemy_evolution.pollution_factor * 100), 80)
-end
-
-gui.make_expansion_settings = function(parent, map_settings)
-  local config_more_option_expansion_flow = parent.add{
-    type = "flow",
-    name = "change-map-settings-config-more-expansion-flow",
-    direction = "vertical"
-  }
-  config_more_option_expansion_flow.add{
-    type = "label",
-    caption = {"gui-map-generator.enemy-expansion-group-tile"},
-    style = "caption_label"
-  }
-  local config_more_option_expansion_table = config_more_option_expansion_flow.add{
-    type = "table",
-    name = "change-map-settings-config-more-expansion-table",
-    column_count = 2,
-    style = "bordered_table"
-  }
-  config_more_option_expansion_table.style.column_alignments[2] = "center"
-
-  config_more_option_expansion_table.add{
-    type = "label",
-    caption = {"gui-map-generator.enemy-expansion-group-tile"}
-  }
-  config_more_option_expansion_table.add{
-    type = "checkbox",
-    name = "change-map-settings-enemy-expansion-checkbox",
-    state = map_settings.enemy_expansion.enabled,
-  }
-  config_more_option_expansion_table.children[1].style.horizontally_stretchable = true
-  gui.make_config_option(config_more_option_expansion_table, "expansion-distance", {"gui-map-generator.enemy-expansion-maximum-expansion-distance"}, {"gui-map-generator.enemy-expansion-maximum-expansion-distance-description"}, tostring(map_settings.enemy_expansion.max_expansion_distance), 30)
-  gui.make_config_option(config_more_option_expansion_table, "expansion-min-size", {"gui-map-generator.enemy-expansion-minimum-expansion-group-size"}, {"gui-map-generator.enemy-expansion-minimum-expansion-group-size-description"}, tostring(map_settings.enemy_expansion.settler_group_min_size), 30)
-  gui.make_config_option(config_more_option_expansion_table, "expansion-max-size", {"gui-map-generator.enemy-expansion-maximum-expansion-group-size"}, {"gui-map-generator.enemy-expansion-maximum-expansion-group-size-description"}, tostring(map_settings.enemy_expansion.settler_group_max_size), 30)
-  gui.make_config_option(config_more_option_expansion_table, "expansion-min-cd", {"gui.change-map-settings-in-unit", {"gui-map-generator.enemy-expansion-minimum-expansion-cooldown"}, {"gui.change-map-settings-minutes"}}, {"gui-map-generator.enemy-expansion-minimum-expansion-cooldown-description"},  tostring(map_settings.enemy_expansion.min_expansion_cooldown / 3600), 30)
-  gui.make_config_option(config_more_option_expansion_table, "expansion-max-cd", {"gui.change-map-settings-in-unit", {"gui-map-generator.enemy-expansion-maximum-expansion-cooldown"}, {"gui.change-map-settings-minutes"}}, {"gui-map-generator.enemy-expansion-maximum-expansion-cooldown-description"}, tostring(map_settings.enemy_expansion.max_expansion_cooldown / 3600), 30)
 end
 
 gui.make_general_settings = function(parent, surface)
@@ -292,21 +186,6 @@ gui.make_general_settings = function(parent, surface)
     state = surface.peaceful_mode,
   }
   config_more_option_general_table.children[1].style.horizontally_stretchable = true
-end
-
-gui.make_config_option = function(parent, name, caption, tooltip, default, max_width)
-  parent.add{
-    type = "label",
-    caption = caption,
-    tooltip = tooltip
-  }
-  local child = parent.add{
-    type = "textfield",
-    name = "change-map-settings-" .. name .. "-textfield",
-  }
-  child.text = default
-  if max_width then child.style.maximal_width = max_width end
-  return child
 end
 
 gui.kill = function(player)

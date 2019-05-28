@@ -43,14 +43,14 @@ end
 map_gen_gui.create_expression_selectors_parent = function(parent)
   local table = parent.add{
     type = "table",
-    name = ENTIRE_PREFIX .. "-expression-selectors-table",
+    name = ENTIRE_PREFIX .. "expression-selectors-table",
     column_count = 1,
     style = "bordered_table"
   }
   table.style.horizontally_stretchable = true
   local flow = table.add{
     type = "flow",
-    name = ENTIRE_PREFIX .. "-expression-selectors-flow",
+    name = ENTIRE_PREFIX .. "expression-selectors-flow",
     direction = "vertical"
   }
   flow.style.horizontally_stretchable = true
@@ -75,7 +75,7 @@ map_gen_gui.make_expression_selector = function(intended_property, expressions, 
 
   local flow = parent.add{
     type = "flow",
-    name = ENTIRE_PREFIX .. "-" .. intended_property .. "-flow",
+    name = ENTIRE_PREFIX .. intended_property .. "-flow",
     direction = "horizontal"
   }
 
@@ -92,7 +92,7 @@ map_gen_gui.make_expression_selector = function(intended_property, expressions, 
   local dropdown_data = map_gen_gui.get_expression_dropdown_data(expressions)
   flow.add{
     type = "drop-down",
-    name =  ENTIRE_PREFIX .. "-" .. intended_property .. "-drop-down",
+    name =  ENTIRE_PREFIX .. intended_property .. "-drop-down",
     items = dropdown_data.items,
     selected_index = dropdown_data.selected_index
   }
@@ -126,19 +126,19 @@ map_gen_gui.create_resource_table = function(parent)
   table.add{type = "label"}
   table.add{
     type = "label",
-    caption = util.add_info_icon_to_localized_string({"gui-map-generator.frequency"}),
+    caption = util.add_info_icon_to_string({"gui-map-generator.frequency"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.resource-frequency-description"}
   }
   table.add{
     type = "label",
-    caption = util.add_info_icon_to_localized_string({"gui-map-generator.size"}),
+    caption = util.add_info_icon_to_string({"gui-map-generator.size"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.resource-size-description"}
   }
   table.add{
     type = "label",
-    caption = util.add_info_icon_to_localized_string({"gui-map-generator.richness"}),
+    caption = util.add_info_icon_to_string({"gui-map-generator.richness"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.resource-richness-description"}
   }
@@ -162,13 +162,13 @@ map_gen_gui.create_controls_with_scale_table = function(parent)
   table.add{type = "label"}
   table.add{
     type = "label",
-    caption = util.add_info_icon_to_localized_string({"gui-map-generator.scale"}),
+    caption = util.add_info_icon_to_string({"gui-map-generator.scale"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.terrain-scale-description"}
   }
   table.add{
     type = "label",
-    caption = util.add_info_icon_to_localized_string({"gui-map-generator.coverage"}),
+    caption = util.add_info_icon_to_string({"gui-map-generator.coverage"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.terrain-coverage-description"}
   }
@@ -196,13 +196,13 @@ map_gen_gui.create_cliffs_table = function(parent)
   table.add{type = "label"}
   table.add{
     type = "label",
-    caption = util.add_info_icon_to_localized_string({"gui-map-generator.cliff-frequency"}),
+    caption = util.add_info_icon_to_string({"gui-map-generator.cliff-frequency"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.cliff-frequency-description"}
   }
   table.add{
     type = "label",
-    caption = util.add_info_icon_to_localized_string({"gui-map-generator.cliff-continuity"}),
+    caption = util.add_info_icon_to_string({"gui-map-generator.cliff-continuity"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.cliff-continuity-description"}
   }
@@ -223,13 +223,13 @@ map_gen_gui.create_climate_table = function(parent)
   table.add{type = "label"}
   table.add{
     type = "label",
-    caption = util.add_info_icon_to_localized_string({"gui-map-generator.scale"}),
+    caption = util.add_info_icon_to_string({"gui-map-generator.scale"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.terrain-scale-description"}
   }
   table.add{
     type = "label",
-    caption = util.add_info_icon_to_localized_string({"gui-map-generator.bias"}),
+    caption = util.add_info_icon_to_string({"gui-map-generator.bias"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.terrain-bias-description"}
   }
@@ -250,13 +250,13 @@ map_gen_gui.create_enemies_table = function(parent)
   table.add{type = "label"}
   table.add{
     type = "label",
-    caption = util.add_info_icon_to_localized_string({"gui-map-generator.frequency"}),
+    caption = util.add_info_icon_to_string({"gui-map-generator.frequency"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.enemy-frequency-description"}
   }
   table.add{
     type = "label",
-    caption = util.add_info_icon_to_localized_string({"gui-map-generator.size"}),
+    caption = util.add_info_icon_to_string({"gui-map-generator.size"}),
     style = "caption_label",
     tooltip = {"gui-map-generator.enemy-size-description"}
   }
@@ -272,7 +272,7 @@ map_gen_gui.create_enemies_table = function(parent)
   -- starting area size
   table.add{
     type = "label",
-    caption = util.add_info_icon_to_localized_string({"gui-map-generator.starting-area-size"}),
+    caption = util.add_info_icon_to_string({"gui-map-generator.starting-area-size"}),
     tooltip = {"gui-map-generator.starting-area-size-description"}
   }
   table.add{type = "label"}
@@ -298,7 +298,7 @@ map_gen_gui.make_autoplace_options = function(name, parent, has_richness)
       label.caption = {"", {"gui-map-generator." .. name}, "/", {"gui-map-generator.island-size"}}
     elseif name == "moisture" or name == "aux" then
       label.tooltip = {"gui-map-generator." .. name .. "-description"}
-      label.caption = util.add_info_icon_to_localized_string(label.caption)
+      label.caption = util.add_info_icon_to_string(label.caption)
     end
   end
   parent.add{
@@ -321,7 +321,7 @@ map_gen_gui.make_autoplace_options = function(name, parent, has_richness)
 end
 
 map_gen_gui.reset_to_defaults = function(parent)
-  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "-expression-selectors-table"][ENTIRE_PREFIX .. "-expression-selectors-flow"]
+  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "expression-selectors-table"][ENTIRE_PREFIX .. "expression-selectors-flow"]
   local resource_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-1"][ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .."resource-table"]
   local controls_with_scale_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "terrain-scroll-pane"][ENTIRE_PREFIX .."controls-with-scale-table"]
   local enemies_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-1"][ENTIRE_PREFIX .."enemies-table"]
@@ -368,7 +368,7 @@ map_gen_gui.reset_to_defaults = function(parent)
 end
 
 map_gen_gui.set_to_current = function(parent, map_gen_settings)
-  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "-expression-selectors-table"][ENTIRE_PREFIX .. "-expression-selectors-flow"]
+  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "expression-selectors-table"][ENTIRE_PREFIX .. "expression-selectors-flow"]
   local resource_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-1"][ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .."resource-table"]
   local controls_with_scale_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "terrain-scroll-pane"][ENTIRE_PREFIX .."controls-with-scale-table"]
   local enemies_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-1"][ENTIRE_PREFIX .."enemies-table"]
@@ -390,11 +390,11 @@ map_gen_gui.set_to_current = function(parent, map_gen_settings)
       else
         noise_expressions_list_item = selected_expression -- number that is really a string. we just use it directly
       end
-      local property_flow = expression_selectors_flow[ENTIRE_PREFIX .. "-" .. property .. "-flow"]
+      local property_flow = expression_selectors_flow[ENTIRE_PREFIX .. property .. "-flow"]
       if not property_flow then
         property_flow = map_gen_gui.make_expression_selector(property, relevant_noise_expressions[property], expression_selectors_flow, true)
       end
-      local dropdown = property_flow[ENTIRE_PREFIX .. "-" .. property .. "-drop-down"]
+      local dropdown = property_flow[ENTIRE_PREFIX .. property .. "-drop-down"]
       map_gen_gui.select_in_dropdown_or_add_and_select(noise_expressions_list_item, dropdown) -- select (optionally add) the item
     end
   end
@@ -440,7 +440,7 @@ end
 map_gen_gui.select_in_dropdown_or_add_and_select = function(item_to_select, dropdown)
   local items = dropdown.items
   for index, item in pairs(items) do
-    if util.compare_localized_string(item_to_select, item) then
+    if util.compare_localized_strings(item_to_select, item) then
       dropdown.selected_index = index
       return -- found in dropdown
     end
@@ -451,8 +451,9 @@ map_gen_gui.select_in_dropdown_or_add_and_select = function(item_to_select, drop
   dropdown.selected_index = index
 end
 
+-- returns map_gen_settings, can throw!
 map_gen_gui.read = function(parent)
-  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "-expression-selectors-table"][ENTIRE_PREFIX .. "-expression-selectors-flow"]
+  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "expression-selectors-table"][ENTIRE_PREFIX .. "expression-selectors-flow"]
   local resource_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-1"][ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .."resource-table"]
   local controls_with_scale_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "terrain-scroll-pane"][ENTIRE_PREFIX .."controls-with-scale-table"]
   local enemies_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-1"][ENTIRE_PREFIX .."enemies-table"]
@@ -466,9 +467,9 @@ map_gen_gui.read = function(parent)
   -- expression selectors
   local possible_properties = util.get_possible_noise_expression_properties()
   for _, property in pairs(possible_properties) do
-    local property_flow = expression_selectors_flow[ENTIRE_PREFIX .. "-" .. property .. "-flow"]
+    local property_flow = expression_selectors_flow[ENTIRE_PREFIX .. property .. "-flow"]
     if property_flow then
-      local dropdown = property_flow[ENTIRE_PREFIX .. "-" .. property .. "-drop-down"]
+      local dropdown = property_flow[ENTIRE_PREFIX .. property .. "-drop-down"]
       local selected_noise_expressions_list_item = dropdown.items[dropdown.selected_index]
       -- above is a localized string in form of {"noise-expression." .. selected_expression} or selected_expression
       -- parse it to get selected_expression
@@ -518,8 +519,8 @@ map_gen_gui.read = function(parent)
 
   -- cliffs
   cliff_settings_mine.name = "cliff"
-  cliff_settings_mine.cliff_elevation_interval = 40 / util.textfield_to_number_with_error(cliffs_table["change-map-settings-map-gen-cliffs-freq"]) -- inverse with 40
-  cliff_settings_mine.richness = util.textfield_to_number_with_error(cliffs_table["change-map-settings-map-gen-cliffs-size"])
+  cliff_settings_mine.cliff_elevation_interval = 40 / util.textfield_to_number_with_error(cliffs_table[ENTIRE_PREFIX .. "cliffs-freq"]) -- inverse with 40
+  cliff_settings_mine.richness = util.textfield_to_number_with_error(cliffs_table[ENTIRE_PREFIX .. "cliffs-size"])
 
   map_gen_settings.autoplace_controls = autoplace_controls_mine
   map_gen_settings.property_expression_names = property_expression_names_mine
