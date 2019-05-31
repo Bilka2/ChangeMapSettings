@@ -9,13 +9,13 @@ map_gen_gui.create = function(parent)
     type = "frame",
     direction = "vertical",
     style = "b_inner_frame",
-    name = ENTIRE_PREFIX .. "map-gen-gui-frame-1"
+    name = ENTIRE_PREFIX .. "gui-frame-1"
   }
   local frame2 = parent.add{
     type = "frame",
     direction = "vertical",
     style = "b_inner_frame",
-    name = ENTIRE_PREFIX .. "map-gen-gui-frame-2"
+    name = ENTIRE_PREFIX .. "gui-frame-2"
   }
 
 
@@ -321,12 +321,12 @@ map_gen_gui.make_autoplace_options = function(name, parent, has_richness)
 end
 
 map_gen_gui.reset_to_defaults = function(parent)
-  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "expression-selectors-table"][ENTIRE_PREFIX .. "expression-selectors-flow"]
-  local resource_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-1"][ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .."resource-table"]
-  local controls_with_scale_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "terrain-scroll-pane"][ENTIRE_PREFIX .."controls-with-scale-table"]
-  local enemies_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-1"][ENTIRE_PREFIX .."enemies-table"]
-  local climate_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .."climate-table"]
-  local cliffs_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .."cliffs-table"]
+  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .. "expression-selectors-table"][ENTIRE_PREFIX .. "expression-selectors-flow"]
+  local resource_table = parent[ENTIRE_PREFIX .. "gui-frame-1"][ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .."resource-table"]
+  local controls_with_scale_table = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .. "terrain-scroll-pane"][ENTIRE_PREFIX .."controls-with-scale-table"]
+  local enemies_table = parent[ENTIRE_PREFIX .. "gui-frame-1"][ENTIRE_PREFIX .."enemies-table"]
+  local climate_table = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .."climate-table"]
+  local cliffs_table = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .."cliffs-table"]
 
   -- expression selectors
   -- making these defaults work with existing GUI that may or may not have more or less dropdowns than the default sounds like a nightmare. So let's just recreate it.
@@ -368,12 +368,12 @@ map_gen_gui.reset_to_defaults = function(parent)
 end
 
 map_gen_gui.set_to_current = function(parent, map_gen_settings)
-  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "expression-selectors-table"][ENTIRE_PREFIX .. "expression-selectors-flow"]
-  local resource_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-1"][ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .."resource-table"]
-  local controls_with_scale_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "terrain-scroll-pane"][ENTIRE_PREFIX .."controls-with-scale-table"]
-  local enemies_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-1"][ENTIRE_PREFIX .."enemies-table"]
-  local climate_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .."climate-table"]
-  local cliffs_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .."cliffs-table"]
+  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .. "expression-selectors-table"][ENTIRE_PREFIX .. "expression-selectors-flow"]
+  local resource_table = parent[ENTIRE_PREFIX .. "gui-frame-1"][ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .."resource-table"]
+  local controls_with_scale_table = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .. "terrain-scroll-pane"][ENTIRE_PREFIX .."controls-with-scale-table"]
+  local enemies_table = parent[ENTIRE_PREFIX .. "gui-frame-1"][ENTIRE_PREFIX .."enemies-table"]
+  local climate_table = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .."climate-table"]
+  local cliffs_table = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .."cliffs-table"]
   local property_expression_names = map_gen_settings.property_expression_names
   local autoplace_controls = map_gen_settings.autoplace_controls
   local cliff_settings = map_gen_settings.cliff_settings
@@ -453,12 +453,12 @@ end
 
 -- returns map_gen_settings, can throw!
 map_gen_gui.read = function(parent)
-  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "expression-selectors-table"][ENTIRE_PREFIX .. "expression-selectors-flow"]
-  local resource_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-1"][ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .."resource-table"]
-  local controls_with_scale_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .. "terrain-scroll-pane"][ENTIRE_PREFIX .."controls-with-scale-table"]
-  local enemies_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-1"][ENTIRE_PREFIX .."enemies-table"]
-  local climate_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .."climate-table"]
-  local cliffs_table = parent[ENTIRE_PREFIX .. "map-gen-gui-frame-2"][ENTIRE_PREFIX .."cliffs-table"]
+  local expression_selectors_flow = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .. "expression-selectors-table"][ENTIRE_PREFIX .. "expression-selectors-flow"]
+  local resource_table = parent[ENTIRE_PREFIX .. "gui-frame-1"][ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .."resource-table"]
+  local controls_with_scale_table = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .. "terrain-scroll-pane"][ENTIRE_PREFIX .."controls-with-scale-table"]
+  local enemies_table = parent[ENTIRE_PREFIX .. "gui-frame-1"][ENTIRE_PREFIX .."enemies-table"]
+  local climate_table = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .."climate-table"]
+  local cliffs_table = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .."cliffs-table"]
   local map_gen_settings = {}
   local property_expression_names_mine = {}
   local autoplace_controls_mine = {}
