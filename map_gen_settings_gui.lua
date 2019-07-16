@@ -179,7 +179,7 @@ map_gen_gui.create_controls_with_scale_table = function(parent)
 
   -- trees and custom mod stuff
   for _, control in pairs(game.autoplace_control_prototypes) do
-    if control.category == "terrain" then
+    if control.category == "terrain" and control.name ~= "planet-size" then -- planet size is a space exploration thing, we don't want the player to change it
       map_gen_gui.make_autoplace_options(control.name, table, false)
     end
   end
@@ -359,7 +359,7 @@ map_gen_gui.reset_to_defaults = function(parent)
       resource_table[ENTIRE_PREFIX .. control.name .. "-freq"].text = "1"
       resource_table[ENTIRE_PREFIX .. control.name .. "-size"].text = "1"
       resource_table[ENTIRE_PREFIX .. control.name .. "-richn"].text = "1"
-    elseif control.category == "terrain" then
+    elseif control.category == "terrain" and control.name ~= "planet-size" then -- planet size is a space exploration thing, we don't want the player to change it
       controls_with_scale_table[ENTIRE_PREFIX .. control.name .. "-freq"].text = "1"
       controls_with_scale_table[ENTIRE_PREFIX .. control.name .. "-size"].text = "1"
     elseif control.category == "enemy" then
@@ -427,7 +427,7 @@ map_gen_gui.set_to_current = function(parent, map_gen_settings)
           resource_table[ENTIRE_PREFIX .. name .. "-freq"].text = util.number_to_string(autoplace_control["frequency"])
           resource_table[ENTIRE_PREFIX .. name .. "-size"].text = util.number_to_string(autoplace_control["size"])
           resource_table[ENTIRE_PREFIX .. name .. "-richn"].text = util.number_to_string(autoplace_control["richness"])
-        elseif valid_autoplace_controls[name].category == "terrain" then
+        elseif valid_autoplace_controls[name].category == "terrain" and name ~= "planet-size" then -- planet size is a space exploration thing, we don't want the player to change it
           controls_with_scale_table[ENTIRE_PREFIX .. name .. "-freq"].text = util.number_to_string(1 / autoplace_control["frequency"]) -- inverse
           controls_with_scale_table[ENTIRE_PREFIX .. name .. "-size"].text = util.number_to_string(autoplace_control["size"])
         elseif valid_autoplace_controls[name].category == "enemy" then
@@ -511,7 +511,7 @@ map_gen_gui.read = function(parent)
         size = util.textfield_to_number_with_error(resource_table[ENTIRE_PREFIX .. control.name .. "-size"]),
         richness = util.textfield_to_number_with_error(resource_table[ENTIRE_PREFIX .. control.name .. "-richn"])
       }
-    elseif control.category == "terrain" then
+    elseif control.category == "terrain" and control.name ~= "planet-size" then -- planet size is a space exploration thing, we don't want the player to change it
       autoplace_controls_mine[control.name] = {
         frequency = 1 / util.textfield_to_number_with_error(controls_with_scale_table[ENTIRE_PREFIX .. control.name .. "-freq"]), -- inverse
         size = util.textfield_to_number_with_error(controls_with_scale_table[ENTIRE_PREFIX .. control.name .. "-size"])
