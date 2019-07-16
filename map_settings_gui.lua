@@ -123,7 +123,10 @@ map_settings_gui.make_config_option = function(parent, name, caption, tooltip, d
   local child = parent.add{
     type = "textfield",
     name = ENTIRE_PREFIX .. name .. "-textfield",
-    text = default
+    text = default,
+    numeric = true,
+    allow_decimal = true,
+    allow_negative = false
   }
   if max_width then child.style.maximal_width = max_width end
   return child

@@ -279,7 +279,10 @@ map_gen_gui.create_enemies_table = function(parent)
   table.add{
     type = "textfield",
     name = ENTIRE_PREFIX .. "starting-area-size",
-    style = "short_number_textfield"
+    style = "short_number_textfield",
+    numeric = true,
+    allow_decimal = true,
+    allow_negative = true
   }
 end
 
@@ -304,18 +307,27 @@ map_gen_gui.make_autoplace_options = function(name, parent, has_richness)
   parent.add{
     type = "textfield",
     name = ENTIRE_PREFIX .. name .. "-freq",
-    style = "short_number_textfield"
+    style = "short_number_textfield",
+    numeric = true,
+    allow_decimal = true,
+    allow_negative = true
   }
   parent.add{
     type = "textfield",
     name = ENTIRE_PREFIX .. name .. "-size",
-    style = "short_number_textfield"
+    style = "short_number_textfield",
+    numeric = true,
+    allow_decimal = true,
+    allow_negative = true
   }
   if has_richness then
     parent.add{
       type = "textfield",
       name = ENTIRE_PREFIX .. name .. "-richn",
-      style = "short_number_textfield"
+      style = "short_number_textfield",
+      numeric = true,
+      allow_decimal = true,
+      allow_negative = true
     }
   end
 end
@@ -381,11 +393,12 @@ map_gen_gui.set_to_current = function(parent, map_gen_settings)
   -- expression selectors
   local possible_properties = util.get_possible_noise_expression_properties()
   local relevant_noise_expressions = util.get_relevant_noise_expressions()
+  local valid_named_noise_expressions = game.named_noise_expressions
   for _, property in pairs(possible_properties) do
     local selected_expression = property_expression_names[property]
     if selected_expression then
       local noise_expressions_list_item
-      if game.named_noise_expressions[selected_expression] then -- proper noise expression, not just some number
+      if valid_named_noise_expressions[selected_expression] then -- proper noise expression, not just some number
         noise_expressions_list_item = {"noise-expression." .. selected_expression}
       else
         noise_expressions_list_item = selected_expression -- number that is really a string. we just use it directly

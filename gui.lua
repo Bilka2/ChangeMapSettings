@@ -110,7 +110,10 @@ gui.regen = function(player)
   map_gen_flow1.add{
     type = "textfield",
     name = "change-map-settings-seed-textfield",
-    text = "0"
+    text = "0",
+    numeric = true,
+    allow_decimal = false,
+    allow_negative = false
   }
 
   -- rest of map gen settings
