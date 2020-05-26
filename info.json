@@ -1,9 +1,9 @@
 {
   "name": "ChangeMapSettings",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "factorio_version" : "0.18",
   "title": "Change Map Settings",
   "author": "Bilka",
   "description": "Allows you to change your map and map generation settings at any time you want.",
-  "dependencies": [ "base >= 0.18.0" ]
+  "dependencies": [ "base >= 0.18.27" ]
 }
