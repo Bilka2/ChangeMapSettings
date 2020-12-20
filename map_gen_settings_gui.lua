@@ -439,9 +439,9 @@ map_gen_gui.set_to_current = function(parent, map_gen_settings)
   end
 
   -- moisture and terrain type
-  climate_table[ENTIRE_PREFIX .. "moisture-freq"].text = 1 / (property_expression_names["control-setting:moisture:frequency:multiplier"] or "1") -- inverse
+  climate_table[ENTIRE_PREFIX .. "moisture-freq"].text = util.number_to_string(1 / (property_expression_names["control-setting:moisture:frequency:multiplier"] or "1")) -- inverse
   climate_table[ENTIRE_PREFIX .. "moisture-size"].text = property_expression_names["control-setting:moisture:bias"] or "0"
-  climate_table[ENTIRE_PREFIX .. "aux-freq"].text = 1 / (property_expression_names["control-setting:aux:frequency:multiplier"] or "1") -- inverse
+  climate_table[ENTIRE_PREFIX .. "aux-freq"].text = util.number_to_string(1 / (property_expression_names["control-setting:aux:frequency:multiplier"] or "1")) -- inverse
   climate_table[ENTIRE_PREFIX .. "aux-size"].text = property_expression_names["control-setting:aux:bias"] or "0"
 
   -- cliffs
