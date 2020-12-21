@@ -34,7 +34,8 @@ gui.regen = function(player)
 
   local button_flow = config_frame.add{
     type = "flow",
-    direction = "horizontal"
+    direction = "horizontal",
+    name = "change-map-settings-map-flow-1",
   }
   button_flow.add{
     type = "button",
@@ -47,6 +48,21 @@ gui.regen = function(player)
     name = "change-map-settings-default-button",
     style = mod_gui.button_style,
     caption = {"gui.change-map-settings-default-button-caption"}
+  }
+
+
+  -- build the reset dropdown, on top is the original setting
+  local items = {}
+  items[1] = {"gui.change-map-settings-game-default"}
+  for name, _ in pairs(game.map_gen_presets) do
+    items[#items+1] = {"map-gen-preset-name." .. name}
+  end
+
+  button_flow.add{
+    type = "drop-down",
+    name =  "change-map-settings-map-preset-drop-down",
+    items = items,
+    selected_index = 1
   }
 
   local config_subframe = config_frame.add{
@@ -98,6 +114,21 @@ gui.regen = function(player)
     name = "change-map-settings-default-map-gen-button",
     style = mod_gui.button_style,
     caption = {"gui.change-map-settings-default-button-caption"}
+  }
+
+  -- build the reset dropdown, on top are the default map generation settings from the new map GUI and the surface defaults
+  local items = {}
+  items[1] = {"gui.change-map-settings-surface-default"}
+  items[2] = {"gui.change-map-settings-map-default"}
+  for name, _ in pairs(game.map_gen_presets) do
+    items[#items+1] = {"map-gen-preset-name." .. name}
+  end
+
+  map_gen_flow1.add{
+    type = "drop-down",
+    name =  "change-map-settings-mapgen-preset-drop-down",
+    items = items,
+    selected_index = 1
   }
 
   --seed
