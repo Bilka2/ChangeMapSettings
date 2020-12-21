@@ -272,6 +272,9 @@ script.on_configuration_changed(function() --migration
     gui.regen(player)
     set_to_current_all(player)
   end
+  if global.surface_defaults == nil then
+    global.surface_defaults = {}
+  end
 end)
 
 script.on_event(defines.events.on_player_created, function(event)
