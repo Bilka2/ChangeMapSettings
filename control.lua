@@ -113,7 +113,7 @@ local function reset_map_gen_to_default(player)
   local map_gen_frame = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"]
 
   --seed
-  map_gen_frame["change-map-settings-map-gen-flow-1"]["change-map-settings-seed-textfield"].text = 0
+  map_gen_frame["change-map-settings-map-gen-flow-1"]["change-map-settings-seed-textfield"].text = "0"
 
   --the rest
   map_gen_gui.reset_to_defaults(map_gen_frame["change-map-settings-map-gen-flow-2"])
