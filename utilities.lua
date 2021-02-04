@@ -53,7 +53,7 @@ util.check_bounds = function(input, min, max, err)
   return false
 end
 
--- returns table = {["intended-property"] = {name = "expression-name", order = "order"}, ...}
+-- returns table = {["intended-property"] = {{name = "expression-name", order = "order"}, ...}}
 util.get_relevant_noise_expressions = function()
   local expressions = {}
   for name, named_noise_expression in pairs(game.named_noise_expressions) do
@@ -71,7 +71,14 @@ util.add_info_icon_to_string = function(string)
 end
 
 util.get_possible_noise_expression_properties = function()
-  return { "elevation", "temperature", "moisture", "aux", "starting-lake-noise-amplitude"}
+  local properties = {}
+  for _, named_noise_expression in pairs(game.named_noise_expressions) do
+    local intended_property = named_noise_expression.intended_property
+    if intended_property ~= "" then
+      properties[intended_property] = true
+    end
+  end
+  return properties
 end
 
 util.compare_localized_strings = function(string1, string2)

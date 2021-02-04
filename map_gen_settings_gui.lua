@@ -341,7 +341,8 @@ map_gen_gui.reset_to_defaults = function(parent)
   local cliffs_table = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .."cliffs-table"]
 
   -- expression selectors
-  -- making these defaults work with existing GUI that may or may not have more or less dropdowns than the default sounds like a nightmare. So let's just recreate it.
+  -- Making these defaults work with existing GUI that may or may not have more or less dropdowns than the default sounds like a nightmare.
+  --   So let's just recreate it.
   expression_selectors_flow.clear()
   map_gen_gui.create_expression_selectors(expression_selectors_flow)
 
@@ -391,10 +392,15 @@ map_gen_gui.set_to_current = function(parent, map_gen_settings)
   local cliff_settings = map_gen_settings.cliff_settings
 
   -- expression selectors
+  -- The default selected expression is omitted from property_expression_names.
+  --   So to make sure we're at current, reset to default first and then apply the changes from property_expression_names.
+  expression_selectors_flow.clear()
+  map_gen_gui.create_expression_selectors(expression_selectors_flow)
+
   local possible_properties = util.get_possible_noise_expression_properties()
   local relevant_noise_expressions = util.get_relevant_noise_expressions()
   local valid_named_noise_expressions = game.named_noise_expressions
-  for _, property in pairs(possible_properties) do
+  for property in pairs(possible_properties) do
     local selected_expression = property_expression_names[property]
     if selected_expression then
       local noise_expressions_list_item
@@ -479,7 +485,7 @@ map_gen_gui.read = function(parent)
 
   -- expression selectors
   local possible_properties = util.get_possible_noise_expression_properties()
-  for _, property in pairs(possible_properties) do
+  for property in pairs(possible_properties) do
     local property_flow = expression_selectors_flow[ENTIRE_PREFIX .. property .. "-flow"]
     if property_flow then
       local dropdown = property_flow[ENTIRE_PREFIX .. property .. "-drop-down"]
