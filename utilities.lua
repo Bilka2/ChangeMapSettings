@@ -29,6 +29,33 @@ util.textfield_to_number_with_error = function(textfield)
   return number
 end
 
+local map_gen_size_lookup =
+{
+  ["none"] = 0,
+  ["very-low"] = 0.5,
+  ["very-small"] = 0.5,
+  ["very-poor"] = 0.5,
+  ["low"] = 1/math.sqrt(2),
+  ["small"] = 1/math.sqrt(2),
+  ["poor"] = 1/math.sqrt(2),
+  ["normal"] = 1,
+  ["medium"] = 1,
+  ["regular"] = 1,
+  ["high"] = math.sqrt(2),
+  ["big"] = math.sqrt(2),
+  ["good"] = math.sqrt(2),
+  ["very-high"] = 2,
+  ["very-big"] = 2,
+  ["very-good"] = 2
+}
+
+util.map_gen_size_to_number = function(map_gen_size) -- passes through 'nil'
+  if type(map_gen_size) == "number" then
+    return map_gen_size
+  end
+  return map_gen_size_lookup[map_gen_size]
+end
+
 util.number_to_string = function(number) -- shows up to 6 decimal places
   if number == math.huge then
     return "inf"

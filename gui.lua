@@ -182,10 +182,33 @@ gui.make_map_gen_settings = function(parent)
       style = "subheader_frame"
     }
 
+    -- presets
+    local presets = {}
+    for name, preset in pairs(game.map_gen_presets) do
+      if not preset.basic_settings then
+        goto continue
+      end
+      if table_size(preset.basic_settings) == 1 and preset.basic_settings.property_expression_names and table_size(preset.basic_settings.property_expression_names) == 0 then
+        goto continue -- vanilla marathon preset that does not have map gen settings affecting properties has an empty property_expression_names table for some reason
+      end
+      presets[#presets+1] = {"map-gen-preset-name." .. name}
+      ::continue::
+    end
+    tool_button_frame.add{
+      type = "drop-down",
+      name = "change-map-settings-preset-dropdown",
+      items = presets
+    }
+    tool_button_frame.add{
+      type = "line",
+      direction = "vertical"
+    }
+
     -- seed
     local seed_label = tool_button_frame.add{
       type = "label",
-      caption = {"gui.change-map-settings-seed-caption"}
+      caption = {"gui.change-map-settings-seed-caption"},
+      style = "caption_label"
     }
     seed_label.style.top_padding = 4
     seed_label.style.left_padding = 8
@@ -240,6 +263,11 @@ end
 gui.get_seed_field = function(player)
   local tool_button_frame = mod_gui.get_frame_flow(player)["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"].children[1]["change-map-settings-map-gen-button-frame"]
   return tool_button_frame["change-map-settings-seed-textfield"]
+end
+
+gui.get_preset_dropdown = function(player)
+  local tool_button_frame = mod_gui.get_frame_flow(player)["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"].children[1]["change-map-settings-map-gen-button-frame"]
+  return tool_button_frame["change-map-settings-preset-dropdown"]
 end
 
 gui.kill = function(player)

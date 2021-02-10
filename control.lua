@@ -8,6 +8,9 @@ local function reset_to_default_map_gen_settings(player)
   --seed
   gui.get_seed_field(player).text = "0"
 
+  --select no preset
+  gui.get_preset_dropdown(player).selected_index = 0
+
   --the rest
   map_gen_gui.reset_to_defaults(gui.get_map_gen_settings_container(player))
 end
@@ -28,6 +31,9 @@ local function set_to_current_map_gen_settings(player)
 
   --seed
   gui.get_seed_field(player).text = tostring(map_gen_settings.seed)
+
+  --select no preset
+  gui.get_preset_dropdown(player).selected_index = 0
 
   --the rest
   map_gen_gui.set_to_current(gui.get_map_gen_settings_container(player), map_gen_settings)
@@ -182,6 +188,25 @@ script.on_event({defines.events.on_gui_click}, function(event)
   elseif clicked_name == "change-map-settings-default-map-gen-button" then
     reset_to_default_map_gen_settings(player)
   end
+end)
+
+script.on_event(defines.events.on_gui_selection_state_changed, function(event)
+  if not event.element.name == "change-map-settings-preset-dropdown" then return end
+
+  local dropdown = event.element
+  local item = dropdown.items[dropdown.selected_index]
+  local player = game.get_player(event.player_index)
+
+  -- reset to default first
+  gui.get_seed_field(player).text = "0"
+  map_gen_gui.reset_to_defaults(gui.get_map_gen_settings_container(player))
+
+  -- then set up the preset
+  -- {"map-gen-preset-name." .. preset_name}
+  local preset_name = item[1]:sub(string.len("map-gen-preset-name.") + 1)
+  local preset = game.map_gen_presets[preset_name]
+
+  map_gen_gui.set_to_current(gui.get_map_gen_settings_container(player), preset.basic_settings)
 end)
 
 script.on_configuration_changed(function() --migration
