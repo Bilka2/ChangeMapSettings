@@ -174,55 +174,55 @@ gui.make_map_gen_settings = function(parent)
     style = "deep_frame"
   }
 
-  -- tool_buttons
-  local tool_button_frame = inner_frame.add{
-    type = "frame",
-    name = "change-map-settings-map-gen-button-frame",
-    direction = "horizontal",
-    style = "subheader_frame"
-  }
-  tool_button_frame.add{
-    type = "flow",
-    direction = "horizontal",
-    style = "pusher"
-  }
-  tool_button_frame.add{
-    type = "sprite-button",
-    name = "change-map-settings-use-current-map-gen-button",
-    style = "tool_button",
-    sprite = "utility/refresh",
-    tooltip = {"gui.change-map-settings-use-current-button-caption"}
-  }
-  tool_button_frame.add{
-    type = "sprite-button",
-    name = "change-map-settings-default-map-gen-button",
-    style = "tool_button_red",
-    sprite = "utility/reset",
-    tooltip = {"gui.change-map-settings-default-button-caption"}
-  }
+  do -- subheader
+    local tool_button_frame = inner_frame.add{
+      type = "frame",
+      name = "change-map-settings-map-gen-button-frame",
+      direction = "horizontal",
+      style = "subheader_frame"
+    }
 
-  -- seed
-  local seed_label = tool_button_frame.add{
-    type = "label",
-    caption = {"gui.change-map-settings-seed-caption"},
-    index = 1
-  }
-  seed_label.style.top_padding = 4
-  seed_label.style.left_padding = 8
-  tool_button_frame.add{
-    type = "textfield",
-    name = "change-map-settings-seed-textfield",
-    text = "0",
-    numeric = true,
-    allow_decimal = false,
-    allow_negative = false,
-    index = 2
-  }
-  tool_button_frame.add{
-    type = "line",
-    direction = "vertical",
-    index = 3
-  }
+    -- seed
+    local seed_label = tool_button_frame.add{
+      type = "label",
+      caption = {"gui.change-map-settings-seed-caption"}
+    }
+    seed_label.style.top_padding = 4
+    seed_label.style.left_padding = 8
+    tool_button_frame.add{
+      type = "textfield",
+      name = "change-map-settings-seed-textfield",
+      text = "0",
+      numeric = true,
+      allow_decimal = false,
+      allow_negative = false
+    }
+    tool_button_frame.add{
+      type = "line",
+      direction = "vertical"
+    }
+
+    -- tool_buttons
+    tool_button_frame.add{
+      type = "flow",
+      direction = "horizontal",
+      style = "pusher"
+    }
+    tool_button_frame.add{
+      type = "sprite-button",
+      name = "change-map-settings-use-current-map-gen-button",
+      style = "tool_button",
+      sprite = "utility/refresh",
+      tooltip = {"gui.change-map-settings-use-current-button-caption"}
+    }
+    tool_button_frame.add{
+      type = "sprite-button",
+      name = "change-map-settings-default-map-gen-button",
+      style = "tool_button_red",
+      sprite = "utility/reset",
+      tooltip = {"gui.change-map-settings-default-button-caption"}
+    }
+  end
 
   -- rest of map gen settings
   local map_gen_flow = inner_frame.add{
