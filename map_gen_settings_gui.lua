@@ -8,13 +8,13 @@ map_gen_gui.create = function(parent)
   local frame1 = parent.add{
     type = "frame",
     direction = "vertical",
-    style = "frame_in_deep_frame",
+    style = "frame_in_deep_frame", -- TODO Bilka check ngp compatiblity. Old style: b_inner_frame
     name = ENTIRE_PREFIX .. "gui-frame-1"
   }
   local frame2 = parent.add{
     type = "frame",
     direction = "vertical",
-    style = "frame_in_deep_frame",
+    style = "frame_in_deep_frame", -- TODO Bilka check ngp compatiblity. Old style: b_inner_frame
     name = ENTIRE_PREFIX .. "gui-frame-2"
   }
 
@@ -27,6 +27,7 @@ map_gen_gui.create = function(parent)
   resource_scroll_pane.style.maximal_height = 300
   map_gen_gui.create_resource_table(resource_scroll_pane)
   map_gen_gui.create_enemies_table(frame1)
+
 
   map_gen_gui.create_expression_selectors(map_gen_gui.create_expression_selectors_parent(frame2))
   local terrain_scroll_pane = frame2.add{
@@ -455,7 +456,6 @@ map_gen_gui.set_to_current = function(parent, map_gen_settings)
   cliffs_table[ENTIRE_PREFIX .. "cliffs-size"].text = util.number_to_string(cliff_settings.richness)
 end
 
-
 map_gen_gui.select_in_dropdown_or_add_and_select = function(item_to_select, dropdown)
   local items = dropdown.items
   for index, item in pairs(items) do
@@ -546,6 +546,5 @@ map_gen_gui.read = function(parent)
   map_gen_settings.cliff_settings = cliff_settings_mine
   return map_gen_settings
 end
-
 
 return map_gen_gui

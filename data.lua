@@ -3,6 +3,18 @@ data.raw["gui-style"]["default"]["pusher"] =
   type = "horizontal_flow_style",
   horizontally_stretchable = "on"
 }
+
+data.raw["gui-style"]["default"]["deep_frame"] =
+{
+  type = "frame_style",
+  parent = "inside_deep_frame",
+  vertical_flow_style =
+  {
+    type = "vertical_flow_style",
+    vertical_spacing = 8
+  }
+}
+
 data.raw["gui-style"]["default"]["frame_in_deep_frame"] =
 {
   type = "frame_style",
@@ -16,16 +28,6 @@ data.raw["gui-style"]["default"]["frame_in_deep_frame"] =
       draw_type = "outer"
     },
     shadow = default_inner_shadow
-  }
-}
-data.raw["gui-style"]["default"]["deep_frame"] =
-{
-  type = "frame_style",
-  parent = "inside_deep_frame",
-  vertical_flow_style =
-  {
-    type = "vertical_flow_style",
-    vertical_spacing = 8
   }
 }
 

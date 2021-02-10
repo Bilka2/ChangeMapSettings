@@ -4,39 +4,41 @@ local util = require("utilities")
 local map_gen_gui = require("map_gen_settings_gui")
 local map_settings_gui = require("map_settings_gui")
 
-local function reset_to_default(player)
-  local frame_flow = mod_gui.get_frame_flow(player)
-  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"].children[1]["change-map-settings-config-subframe"]["change-map-settings-config-table"]
-  --General
-  local general_table = config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
-  general_table["change-map-settings-peaceful-checkbox"].state = false
+local function reset_to_default_map_gen_settings(player)
+  --seed
+  gui.get_seed_field(player).text = "0"
+
+  --the rest
+  map_gen_gui.reset_to_defaults(gui.get_map_gen_settings_container(player))
+end
+
+local function reset_to_default_map_settings(player)
+  -- peaceful mode
+  gui.get_peaceful_mode_checkbox(player).state = false
 
   -- MAP SETTINGS --
+  local config_table = gui.get_map_settings_container(player)
   map_settings_gui.expansion_reset_to_defaults(config_table)
   map_settings_gui.evolution_reset_to_defaults(config_table)
   map_settings_gui.pollution_reset_to_defaults(config_table)
 end
 
 local function set_to_current_map_gen_settings(player)
-  local frame_flow = mod_gui.get_frame_flow(player)
   local map_gen_settings = player.surface.map_gen_settings
-  local map_gen_frame = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"].children[1]
 
   --seed
-  map_gen_frame["change-map-settings-map-gen-flow-1"]["change-map-settings-seed-textfield"].text = tostring(map_gen_settings.seed)
+  gui.get_seed_field(player).text = tostring(map_gen_settings.seed)
 
   --the rest
-  map_gen_gui.set_to_current(map_gen_frame["change-map-settings-map-gen-flow-2"], map_gen_settings)
+  map_gen_gui.set_to_current(gui.get_map_gen_settings_container(player), map_gen_settings)
 end
 
 local function set_to_current_map_settings(player)
-  local frame_flow = mod_gui.get_frame_flow(player)
-  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"].children[1]["change-map-settings-config-subframe"]["change-map-settings-config-table"]
-  --General
-  local general_table = config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
-  general_table["change-map-settings-peaceful-checkbox"].state = player.surface.peaceful_mode
+  -- peaceful mode
+  gui.get_peaceful_mode_checkbox(player).state = player.surface.peaceful_mode
 
   -- MAP SETTINGS --
+  local config_table = gui.get_map_settings_container(player)
   local map_settings = game.map_settings
   map_settings_gui.expansion_set_to_current(config_table, map_settings)
   map_settings_gui.evolution_set_to_current(config_table, map_settings)
@@ -49,12 +51,10 @@ local function set_to_current_all(player)
 end
 
 local function change_map_settings(player)
-  local frame_flow = mod_gui.get_frame_flow(player)
-  local config_table = frame_flow["change-map-settings-main-flow"]["change-map-settings-config-frame"].children[1]["change-map-settings-config-subframe"]["change-map-settings-config-table"]
+  local config_table = gui.get_map_settings_container(player)
 
   -- Reading everything out
-  local general_table = config_table["change-map-settings-config-more-general-flow"]["change-map-settings-config-more-general-table"]
-  local peaceful_mode = general_table["change-map-settings-peaceful-checkbox"].state
+  local peaceful_mode = gui.get_peaceful_mode_checkbox(player).state
 
   local status, enemy_expansion = pcall(map_settings_gui.expansion_read, config_table)
   if not status then
@@ -108,23 +108,9 @@ local function change_map_settings(player)
   end
 end
 
-local function reset_map_gen_to_default(player)
-  local frame_flow = mod_gui.get_frame_flow(player)
-  local map_gen_frame = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"].children[1]
-
-  --seed
-  map_gen_frame["change-map-settings-map-gen-flow-1"]["change-map-settings-seed-textfield"].text = "0"
-
-  --the rest
-  map_gen_gui.reset_to_defaults(map_gen_frame["change-map-settings-map-gen-flow-2"])
-end
-
 local function change_map_gen_settings(player)
-  local frame_flow = mod_gui.get_frame_flow(player)
-  local map_gen_frame = frame_flow["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"].children[1]
-
   --all the stuff
-  local status, settings = pcall(map_gen_gui.read, map_gen_frame["change-map-settings-map-gen-flow-2"])
+  local status, settings = pcall(map_gen_gui.read, gui.get_map_gen_settings_container(player))
   if not status then
     player.print(settings)
     player.print({"msg.change-map-settings-apply-failed"})
@@ -140,7 +126,7 @@ local function change_map_gen_settings(player)
   settings.autoplace_settings = player.surface.map_gen_settings.autoplace_settings
 
   --seed
-  local seed = util.textfield_to_uint(map_gen_frame["change-map-settings-map-gen-flow-1"]["change-map-settings-seed-textfield"])
+  local seed = util.textfield_to_uint(gui.get_seed_field(player))
   if seed and seed == 0 then
     settings.seed = math.random(0, 4294967295)
   elseif seed then
@@ -192,9 +178,9 @@ script.on_event({defines.events.on_gui_click}, function(event)
   elseif clicked_name == "change-map-settings-use-current-map-gen-button" then
     set_to_current_map_gen_settings(player)
   elseif clicked_name == "change-map-settings-default-button" then
-    reset_to_default(player)
+    reset_to_default_map_settings(player)
   elseif clicked_name == "change-map-settings-default-map-gen-button" then
-    reset_map_gen_to_default(player)
+    reset_to_default_map_gen_settings(player)
   end
 end)
 
