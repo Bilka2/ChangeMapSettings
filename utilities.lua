@@ -93,8 +93,8 @@ util.get_relevant_noise_expressions = function()
   return expressions
 end
 
-util.add_info_icon_to_string = function(string)
-  return {"", string, " [img=info]"}
+util.add_info_icon_to_string = function(str)
+  return {"", str, " [img=info]"}
 end
 
 util.get_possible_noise_expression_properties = function()

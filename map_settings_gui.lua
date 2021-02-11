@@ -264,7 +264,7 @@ map_settings_gui.pollution_read = function(parent)
                                                                    {"msg." .. MOD_PREFIX .. "invalid-pollution-tree-absorb"})
   pollution.diffusion_ratio = util.check_bounds(util.textfield_to_uint(table[ENTIRE_PREFIX .. WIDGET_PREFIX .. "diffusion-textfield"]),
                                                 0, 25,
-                                                {"msg." .. MOD_PREFIX .. "-invalid-pollution-diffusion"}) / 100
+                                                {"msg." .. MOD_PREFIX .. "invalid-pollution-diffusion"}) / 100
   return pollution
 end
 
