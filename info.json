@@ -4,5 +4,13 @@
   "factorio_version" : "1.1",
   "title": "Change Map Settings",
   "author": "Bilka",
-  "description": "Allows you to change your map and map generation settings at any time you want."
+  "description": "Allows you to change your map and map generation settings at any time you want.",
+  "package":
+  { 
+    "scripts":
+    {
+      "prepackage": "./scripts/extract_changes.sh",
+      "postpublish": "./scripts/github_release.sh"
+    }
+  }
 }
