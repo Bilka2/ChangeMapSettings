@@ -198,7 +198,7 @@ script.on_event(defines.events.on_gui_selection_state_changed, function(event)
   local player = game.get_player(event.player_index)
 
   -- reset to default first
-  gui.get_seed_field(player).text = "0"
+  -- gui.get_seed_field(player).text = "0" -- not for now, makes it hard to keep the seed the same when browsing settings
   map_gen_gui.reset_to_defaults(gui.get_map_gen_settings_container(player))
 
   -- then set up the preset
