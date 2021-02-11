@@ -191,7 +191,7 @@ script.on_event({defines.events.on_gui_click}, function(event)
 end)
 
 script.on_event(defines.events.on_gui_selection_state_changed, function(event)
-  if not event.element.name == "change-map-settings-preset-dropdown" then return end
+  if event.element.name ~= "change-map-settings-preset-dropdown" then return end
 
   local dropdown = event.element
   local item = dropdown.items[dropdown.selected_index]
