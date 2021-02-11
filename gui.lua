@@ -18,13 +18,14 @@ gui.regen = function(player)
   button.visible = true
 
   -- general gui frame setup --
-  local frame_flow = mod_gui.get_frame_flow(player)
-  local main_flow = frame_flow.add{
-    type = "flow",
+  local main_flow = player.gui.screen.add{
+    type = "frame",
     name = "change-map-settings-main-flow",
-    direction = "horizontal"
+    direction = "horizontal",
+    style = "invisible_frame"
   }
   main_flow.visible = false
+  main_flow.force_auto_center()
 
   -- map settings
   local map_settings_frame = main_flow.add{
@@ -33,6 +34,7 @@ gui.regen = function(player)
     name = "change-map-settings-map-settings-frame",
     direction = "vertical"
   }
+  map_settings_frame.drag_target = main_flow
   gui.make_map_settings(map_settings_frame, player.surface)
 
   -- start button at the bottom
@@ -46,6 +48,7 @@ gui.regen = function(player)
     name = "change-map-settings-map-gen-frame",
     direction = "vertical"
   }
+  map_gen_frame.drag_target = main_flow
   gui.make_map_gen_settings(map_gen_frame)
 
   -- start button at the bottom
@@ -140,7 +143,7 @@ gui.make_general_map_settings = function(parent, surface)
 end
 
 gui.get_map_settings_container = function(player)
-  return mod_gui.get_frame_flow(player)["change-map-settings-main-flow"]["change-map-settings-map-settings-frame"].children[1]["change-map-settings-map-settings-table-holder"].children[1]
+  return player.gui.screen["change-map-settings-main-flow"]["change-map-settings-map-settings-frame"].children[1]["change-map-settings-map-settings-table-holder"].children[1]
 end
 
 gui.get_peaceful_mode_checkbox = function(player)
@@ -257,25 +260,30 @@ gui.make_map_gen_settings = function(parent)
 end
 
 gui.get_map_gen_settings_container = function(player)
-  return mod_gui.get_frame_flow(player)["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"].children[1]["change-map-settings-map-gen-flow"]
+  return player.gui.screen["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"].children[1]["change-map-settings-map-gen-flow"]
 end
 
 gui.get_seed_field = function(player)
-  local tool_button_frame = mod_gui.get_frame_flow(player)["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"].children[1]["change-map-settings-map-gen-button-frame"]
+  local tool_button_frame = player.gui.screen["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"].children[1]["change-map-settings-map-gen-button-frame"]
   return tool_button_frame["change-map-settings-seed-textfield"]
 end
 
 gui.get_preset_dropdown = function(player)
-  local tool_button_frame = mod_gui.get_frame_flow(player)["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"].children[1]["change-map-settings-map-gen-button-frame"]
+  local tool_button_frame = player.gui.screen["change-map-settings-main-flow"]["change-map-settings-map-gen-frame"].children[1]["change-map-settings-map-gen-button-frame"]
   return tool_button_frame["change-map-settings-preset-dropdown"]
 end
 
 gui.kill = function(player)
   local button_flow = mod_gui.get_button_flow(player)
-  local frame_flow = mod_gui.get_frame_flow(player)
   if button_flow["change-map-settings-toggle-config"] then
     button_flow["change-map-settings-toggle-config"].destroy()
   end
+  if player.gui.screen["change-map-settings-main-flow"] then
+    player.gui.screen["change-map-settings-main-flow"].destroy()
+  end
+
+  --migration from pre 5.0.0
+  local frame_flow = mod_gui.get_frame_flow(player)
   if frame_flow["change-map-settings-main-flow"] then
     frame_flow["change-map-settings-main-flow"].destroy()
   end

@@ -4,6 +4,7 @@ Date: ????
   Features:
     - Updated to Factorio 1.1.
     - Added map generation preset selector.
+    - Moved GUI into the center of the screen and made it draggable.
 ---------------------------------------------------------------------------------------------------
 Version: 4.0.1
 Date: 26. 05. 2020
