@@ -1,4 +1,3 @@
-local mod_gui = require("mod-gui")
 local gui = require("gui")
 local util = require("utilities")
 local map_gen_gui = require("map_gen_settings_gui")

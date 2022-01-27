@@ -1,3 +1,4 @@
+local util = require("utilities")
 local mod_gui = require("mod-gui")
 local map_gen_gui = require("map_gen_settings_gui")
 local map_settings_gui = require("map_settings_gui")
@@ -132,7 +133,8 @@ gui.make_general_map_settings = function(parent, surface)
 
   config_more_option_general_table.add{
     type = "label",
-    caption = {"gui-map-generator.peaceful-mode-checkbox"}
+    caption = util.add_info_icon_to_string({"gui-map-generator.peaceful-mode-checkbox"}),
+    tooltip = {"gui-map-generator.peaceful-mode-description"}
   }
   config_more_option_general_table.add{
     type = "checkbox",

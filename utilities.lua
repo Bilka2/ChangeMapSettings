@@ -1,5 +1,5 @@
 local util = {}
-local tableutil = require("util").table
+local tableutil = require("__core__/lualib/util").table
 
 util.textfield_to_uint = function(textfield)
   local number = util.textfield_to_number(textfield)
@@ -93,6 +93,8 @@ util.get_relevant_noise_expressions = function()
   return expressions
 end
 
+---@param str LocalisedString
+---@return LocalisedString
 util.add_info_icon_to_string = function(str)
   return {"", str, " [img=info]"}
 end
