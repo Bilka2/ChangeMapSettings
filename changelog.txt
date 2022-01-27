@@ -3,6 +3,8 @@ Version: 5.0.1
 Date: ????
   Minor Features:
     - Added peaceful mode description.
+  Bugfixes:
+    - Fixed crash when setting map preset to "Space Exploration Defaults".
 ---------------------------------------------------------------------------------------------------
 Version: 5.0.0
 Date: 2021-02-11

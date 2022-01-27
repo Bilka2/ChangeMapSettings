@@ -450,9 +450,9 @@ map_gen_gui.set_to_current = function(parent, map_gen_settings)
   -- moisture and terrain type
   if property_expression_names then -- can be missing when reading from preset
     climate_table[ENTIRE_PREFIX .. "moisture-freq"].text = util.number_to_string(1 / (property_expression_names["control-setting:moisture:frequency:multiplier"] or 1)) -- inverse
-    climate_table[ENTIRE_PREFIX .. "moisture-size"].text = property_expression_names["control-setting:moisture:bias"] or "0"
+    climate_table[ENTIRE_PREFIX .. "moisture-size"].text = util.number_to_string(property_expression_names["control-setting:moisture:bias"] or 0)
     climate_table[ENTIRE_PREFIX .. "aux-freq"].text = util.number_to_string(1 / (property_expression_names["control-setting:aux:frequency:multiplier"] or 1)) -- inverse
-    climate_table[ENTIRE_PREFIX .. "aux-size"].text = property_expression_names["control-setting:aux:bias"] or "0"
+    climate_table[ENTIRE_PREFIX .. "aux-size"].text = util.number_to_string(property_expression_names["control-setting:aux:bias"] or 0)
   end
 
   -- cliffs
