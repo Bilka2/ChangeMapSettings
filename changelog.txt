@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 5.0.1
-Date: ????
+Date: 2022-01-27
   Features:
     - Added peaceful mode description.
     - Changed license to MIT.
