@@ -491,7 +491,8 @@ map_gen_gui.select_in_dropdown_or_add_and_select = function(item_to_select, drop
 end
 
 -- returns map_gen_settings, can throw!
-map_gen_gui.read = function(parent)
+-- param current_map_gen_settings only used for space exploration "planet-size" !!!
+map_gen_gui.read = function(parent, current_map_gen_settings)
   local expression_selectors_flow = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .. "expression-selectors-table"][ENTIRE_PREFIX .. "expression-selectors-flow"]
   local resource_table = parent[ENTIRE_PREFIX .. "gui-frame-1"][ENTIRE_PREFIX .. "resource-scroll-pane"][ENTIRE_PREFIX .."resource-table"]
   local controls_with_scale_table = parent[ENTIRE_PREFIX .. "gui-frame-2"][ENTIRE_PREFIX .. "terrain-scroll-pane"][ENTIRE_PREFIX .."controls-with-scale-table"]
@@ -548,6 +549,11 @@ map_gen_gui.read = function(parent)
         size = util.textfield_to_number_with_error(enemies_table[ENTIRE_PREFIX .. control.name .. "-size"])
       }
     end
+  end
+
+  -- but space explorations planet size still needs to be set!
+  if current_map_gen_settings.autoplace_controls["planet-size"] then
+    autoplace_controls_mine["planet-size"] = current_map_gen_settings.autoplace_controls["planet-size"]
   end
 
   -- moisture and terrain type

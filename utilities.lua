@@ -57,6 +57,10 @@ util.map_gen_size_to_number = function(map_gen_size) -- passes through 'nil'
 end
 
 util.number_to_string = function(number) -- shows up to 6 decimal places
+  -- well this isn't really the intended usecase but I'd rather not have to work around this
+  if type(number) == "string" then
+    return number
+  end
   if number == math.huge then
     return "inf"
   elseif number == -math.huge then
