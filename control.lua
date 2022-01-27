@@ -1,7 +1,7 @@
-local gui = require("gui")
-local util = require("utilities")
-local map_gen_gui = require("map_gen_settings_gui")
-local map_settings_gui = require("map_settings_gui")
+local gui = require("__ChangeMapSettings__/gui")
+local util = require("__ChangeMapSettings__/utilities")
+local map_gen_gui = require("__ChangeMapSettings__/map_gen_settings_gui")
+local map_settings_gui = require("__ChangeMapSettings__/map_settings_gui")
 
 local function reset_to_default_map_gen_settings(player)
   --seed

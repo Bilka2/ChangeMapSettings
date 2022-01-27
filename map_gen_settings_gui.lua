@@ -1,4 +1,4 @@
-local util = require("utilities")
+local util = require("__ChangeMapSettings__/utilities")
 local MOD_PREFIX = "change-map-settings-"
 local GUI_PREFIX = "map-gen-"
 local ENTIRE_PREFIX = MOD_PREFIX .. GUI_PREFIX
