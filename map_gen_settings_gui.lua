@@ -147,7 +147,7 @@ map_gen_gui.create_resource_table = function(parent)
   -- resources
   for _, control in pairs(game.autoplace_control_prototypes) do
     if control.category == "resource" then
-      map_gen_gui.make_autoplace_options(control.name, table, true)
+      map_gen_gui.make_autoplace_options(control.name, table, true, control)
     end
   end
 end
@@ -181,7 +181,7 @@ map_gen_gui.create_controls_with_scale_table = function(parent)
   -- trees and custom mod stuff
   for _, control in pairs(game.autoplace_control_prototypes) do
     if control.category == "terrain" and control.name ~= "planet-size" then -- planet size is a space exploration thing, we don't want the player to change it
-      map_gen_gui.make_autoplace_options(control.name, table, false)
+      map_gen_gui.make_autoplace_options(control.name, table, false, control)
     end
   end
 end
@@ -266,7 +266,7 @@ map_gen_gui.create_enemies_table = function(parent)
   -- biter bases
   for _, control in pairs(game.autoplace_control_prototypes) do
     if control.category == "enemy" then
-      map_gen_gui.make_autoplace_options(control.name, table, false)
+      map_gen_gui.make_autoplace_options(control.name, table, false, control)
     end
   end
 
@@ -287,24 +287,10 @@ map_gen_gui.create_enemies_table = function(parent)
   }
 end
 
-map_gen_gui.make_autoplace_options = function(name, parent, has_richness)
-  if name ~= "cliffs" and name ~= "water" and name ~= "moisture" and name ~= "aux" then
-    parent.add{
-      type = "label",
-      caption = {"autoplace-control-names." .. name}
-    }
-  else
-    local label = parent.add{
-      type = "label",
-      caption = {"gui-map-generator." .. name}
-    }
-    if name == "water" then
-      label.caption = {"", {"gui-map-generator." .. name}, "/", {"gui-map-generator.island-size"}}
-    elseif name == "moisture" or name == "aux" then
-      label.tooltip = {"gui-map-generator." .. name .. "-description"}
-      label.caption = util.add_info_icon_to_string(label.caption)
-    end
-  end
+-- autoplace is optional
+-- if autoplace is provided, the localised name is taken from there
+map_gen_gui.make_autoplace_options = function(name, parent, has_richness, autoplace)
+  map_gen_gui.make_autoplace_label(name, parent, autoplace)
   parent.add{
     type = "textfield",
     name = ENTIRE_PREFIX .. name .. "-freq",
@@ -331,6 +317,34 @@ map_gen_gui.make_autoplace_options = function(name, parent, has_richness)
       allow_negative = true
     }
   end
+end
+
+local autoplace_name_locale =
+{
+  ["aux"] = {"gui-map-generator.aux"},
+  ["cliffs"] = {"gui-map-generator.cliffs"},
+  ["moisture"] = {"gui-map-generator.moisture"},
+  ["water"] = {"", {"gui-map-generator.water"}, "/", {"gui-map-generator.island-size"}}
+}
+
+-- if autoplace is provided, the localised name is taken from there
+map_gen_gui.make_autoplace_label = function(name, parent, autoplace)
+  local label = parent.add{
+    type = "label"
+  }
+
+  if autoplace then
+    label.caption = autoplace.localised_name
+    assert(label.caption ~= "nil")
+    return
+  end
+
+  label.caption = autoplace_name_locale[name]
+  if name == "moisture" or name == "aux" then
+    label.tooltip = {"gui-map-generator." .. name .. "-description"}
+    label.caption = util.add_info_icon_to_string(label.caption)
+  end
+  assert(label.caption ~= "nil")
 end
 
 map_gen_gui.reset_to_defaults = function(parent)
